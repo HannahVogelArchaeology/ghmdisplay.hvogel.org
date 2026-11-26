@@ -1,28 +1,56 @@
 title: "Disability Heritage: Archaeology with Difference"
+tagline: Curated by Hannah Vogel
 description: >-
-  Curated by Hannah Vogel, this museum exhibition will be launched on
-  Thursday the 3 of December 2026 - International Day of Persons
-  with Disability.  
+  Disability is part of our history. However, archaeology is often ableist, overlooking,
+  or worse, devaluing disabled experiences. This display invites you to think differently.
 lang: en-AU
 url: "https://ghmdisplay.hvogel.org"
 baseurl: ""
-repository: https://github.com/HannahVogelArchaeology/ghmdisplay.hvogel.org
+repository: HannahVogelArchaeology/ghmdisplay.hvogel.org
 
-author: Hannah Vogel
+author:
+  name: Hannah Vogel
+  type: Person
 
 header_pages:
-  - index.md
+  - pages/index.md
+  - pages/shelves/top.md
+  - pages/shelves/middle.md
+  - pages/shelves/bottom.md
+  - pages/curation.md
+
+shelves: [top, middle, bottom]
+
+kiosk:
+  idle_seconds: 300
+  warning_seconds: 20
+
+analytics:
+  enabled: true
+  custom_events: false
+
+image_sizes: [400, 800, 1600]
+
+kramdown:
+  smart_quotes: ["apos", "apos", "quot", "quot"]
 
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
 exclude:
+  - ACCESSIBILITY.md
   - AGENTS.md
-  - CLAUDE.md
   - CITATION.cff
+  - CLAUDE.md
+  - CONTRIBUTORS.md
   - Gemfile
   - Gemfile.lock
   - LICENSE
   - NOTICE.md
   - README.md
+  - Rakefile
+  - _scripts
+  - docs
+  - node_modules
+  - tests

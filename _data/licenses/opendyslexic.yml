@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=../schemas/license.schema.yml
+name: OpenDyslexic
+use: optional reading font
+used_for: website
+licence:
+  name: SIL Open Font License 1.1
+  url: https://openfontlicense.org/open-font-license-official-text/
+author:
+  name: Abbie Gonzalez, files from Fontsource v5.3.0
+  url: https://opendyslexic.org/

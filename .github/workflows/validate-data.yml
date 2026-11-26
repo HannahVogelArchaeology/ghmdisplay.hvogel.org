@@ -1,0 +1,41 @@
+# Checks the YAML data files against their schemas in _data/schemas/ whenever data or
+# this workflow changes. check-jsonschema reads YAML, so it also catches files that
+# won't parse. Schemas are JSON Schema, written in YAML.
+name: Validate data
+
+on:
+  push:
+    branches: [main]
+    paths: ["_data/**", ".github/workflows/validate-data.yml"]
+  pull_request:
+    paths: ["_data/**", ".github/workflows/validate-data.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CHECK_JSONSCHEMA: check-jsonschema==0.38.2
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Check the schemas themselves are valid
+        run: pipx run --spec "$CHECK_JSONSCHEMA" check-jsonschema --check-metaschema _data/schemas/*.yml
+
+      - name: Check every shelf
+        run: pipx run --spec "$CHECK_JSONSCHEMA" check-jsonschema --schemafile _data/schemas/shelf.schema.yml _data/shelves/*.yml
+
+      - name: Check the website development team (Role and Name only)
+        run: pipx run --spec "$CHECK_JSONSCHEMA" check-jsonschema --schemafile _data/schemas/team.schema.yml _data/team.yml
+
+      - name: Check the curator portrait
+        run: pipx run --spec "$CHECK_JSONSCHEMA" check-jsonschema --schemafile _data/schemas/bio_pic.schema.yml _data/bio_pic.yml
+
+      - name: Check every licence
+        run: pipx run --spec "$CHECK_JSONSCHEMA" check-jsonschema --schemafile _data/schemas/license.schema.yml _data/licenses/*.yml

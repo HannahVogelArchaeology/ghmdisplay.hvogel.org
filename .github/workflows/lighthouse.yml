@@ -1,3 +1,6 @@
+# Audits every built page on desktop and mobile: Lighthouse scores against pass marks
+# (_scripts/lighthouse-report.mjs) plus an axe-core WCAG 2.2 A/AA check across Light,
+# Dark, and High Contrast modes (_scripts/axe-report.mjs).
 name: Lighthouse
 
 on:
@@ -10,43 +13,159 @@ permissions:
   contents: read
 
 jobs:
-  audit:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+
+      - name: Prepare site
+        uses: ./.github/actions/prepare-site
+
+      - name: Build site
+        env:
+          JEKYLL_ENV: production
+        run: bundle exec jekyll build --destination "$RUNNER_TEMP/site"
+
+      - name: Save built site
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          ruby-version: "4.0.6"
-          bundler-cache: true
-      - name: Build local audit target
-        run: bundle exec jekyll build --destination "${RUNNER_TEMP}/site/group33"
-      - name: Serve local audit target
+          name: site
+          path: ${{ runner.temp }}/site
+          retention-days: 1
+
+  audit-device:
+    name: audit (${{ matrix.device }})
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - device: desktop
+            min-performance: "95"
+          - device: mobile
+            min-performance: "80"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Get built site
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site
+          path: ${{ runner.temp }}/site
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: _scripts/package-lock.json
+
+      - name: Install audit tools
+        run: npm ci --prefix _scripts
+
+      - name: Serve site
         run: |
-          mkdir -p "${RUNNER_TEMP}/lighthouse"
-          python3 -m http.server 4173 --directory "${RUNNER_TEMP}/site" >"${RUNNER_TEMP}/jekyll-server.log" 2>&1 &
-          curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 http://127.0.0.1:4173/group33/ >/dev/null
+          mkdir -p "$RUNNER_TEMP/reports"
+          node _scripts/serve.mjs "$RUNNER_TEMP/site" 4173 &
+          curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 http://127.0.0.1:4173/ > /dev/null
+
+      - name: List pages
+        id: pages
+        working-directory: ${{ runner.temp }}/site
+        run: |
+          paths=$(find . -name index.html | sed 's|^\./|/|; s|index\.html$||' | sort)
+          echo "Auditing:" $paths
+          echo "paths=$(echo $paths)" >> "$GITHUB_OUTPUT"
+
+      - name: Check WCAG 2.2 A/AA (axe-core across Light, Dark, High Contrast)
+        id: axe
+        env:
+          AXE_OUT: ${{ runner.temp }}/reports
+        run: CHROME="$(command -v google-chrome)" node _scripts/axe-report.mjs http://127.0.0.1:4173 ${{ matrix.device }} ${{ steps.pages.outputs.paths }} /404.html
+
       - name: Run Lighthouse
         id: lighthouse
-        uses: foo-software/lighthouse-check-action@a80267da2e0244b8a2e457a8575fc47590615852 # v12.0.1
-        with:
-          device: desktop
-          outputDirectory: ${{ runner.temp }}/lighthouse
-          urls: http://127.0.0.1:4173/group33/
-      - name: Check shipped Lighthouse baseline
-        uses: foo-software/lighthouse-check-status-action@2b9d5101f7a0de86ddb153a0d77ad7046aac1052 # v3.0.1
-        with:
-          lighthouseCheckResults: ${{ steps.lighthouse.outputs.lighthouseCheckResults }}
-          minAccessibilityScore: "100"
-          minBestPracticesScore: "100"
-          minPerformanceScore: "100"
-          minSeoScore: "100"
-      - name: Upload Lighthouse reports
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+          PRESET: ${{ matrix.device == 'desktop' && '--preset=desktop' || '' }}
+        run: |
+          for page in ${{ steps.pages.outputs.paths }}; do
+            name=$(echo "$page" | sed 's|^/|home-|; s|/$||; s|/|-|g')
+            _scripts/node_modules/.bin/lighthouse "http://127.0.0.1:4173$page" $PRESET --quiet \
+              --chrome-flags="--headless=new --no-sandbox" \
+              --output=html --output=json --output-path="$RUNNER_TEMP/reports/$name" \
+              || echo "::warning::Lighthouse could not audit $page on ${{ matrix.device }}; re-run the job."
+          done
+
+      - name: Summarise Lighthouse scores
+        id: scores
+        if: ${{ !cancelled() && steps.lighthouse.outcome == 'success' }}
+        env:
+          MIN_PERFORMANCE: ${{ matrix.min-performance }}
+        run: node _scripts/lighthouse-report.mjs "$RUNNER_TEMP/reports" ${{ matrix.device }}
+
+      - name: Fail on Lighthouse scores
+        if: ${{ !cancelled() && steps.scores.outcome == 'success' && steps.scores.outputs.failures != '0' }}
+        run: |
+          echo "::error::${{ steps.scores.outputs.failures }} Lighthouse score(s) below the pass mark on ${{ matrix.device }}. See the job summary for the page and the audits that cost points."
+          exit 1
+
+      - name: Fail on WCAG failures
+        if: ${{ !cancelled() && steps.axe.outcome == 'success' && steps.axe.outputs.failures != '0' }}
+        run: |
+          echo "::error::${{ steps.axe.outputs.failures }} WCAG failure(s) on ${{ matrix.device }}. See the job summary for criterion, page and element."
+          exit 1
+
+      - name: Save reports
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: lighthouse-reports
-          path: ${{ runner.temp }}/lighthouse
+          name: lighthouse-reports-${{ matrix.device }}
+          path: ${{ runner.temp }}/reports
           if-no-files-found: error
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Audit does not block merging
+        run: echo "See the audit (desktop) and audit (mobile) checks for results."
+
+  comment:
+    needs: audit-device
+    if: ${{ !cancelled() && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      pull-requests: write
+    steps:
+      - name: Post results on the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh run download "$GITHUB_RUN_ID" --pattern 'lighthouse-reports-*' --dir reports || true
+          for device in desktop mobile; do
+            for check in lighthouse wcag; do
+              report="reports/lighthouse-reports-$device/$check-$device.md"
+              if [ -f "$report" ]; then
+                cat "$report"
+              else
+                printf '## %s check: %s\n\nNo report; the audit stopped before this check. See the run.\n\n' "$check" "$device"
+              fi
+            done
+          done > comment.md
+          printf 'Full Lighthouse reports: [this run](%s), under Artifacts.\n' "$RUN_URL" >> comment.md
+
+          if [ "$(wc -c < comment.md)" -gt 60000 ]; then
+            head -c 60000 comment.md > short.md
+            printf '\n\n…cut short. The full tables are on [this run](%s).\n' "$RUN_URL" >> short.md
+            mv short.md comment.md
+          fi
+          gh pr comment "$PR" --body-file comment.md --edit-last --create-if-none

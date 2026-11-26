@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=../schemas/license.schema.yml
+name: Playwright
+use: end-to-end and accessibility browser testing
+used_for: building
+licence:
+  name: Apache License 2.0
+  url: https://github.com/microsoft/playwright/blob/main/LICENSE
+author:
+  name: Microsoft Corporation
+  url: https://playwright.dev

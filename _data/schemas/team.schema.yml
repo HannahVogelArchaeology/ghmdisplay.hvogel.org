@@ -1,0 +1,24 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: team.schema.yml
+title: Website Development Team
+type: object
+required: [group33, group34]
+additionalProperties: false
+properties:
+  group33:
+    type: array
+    minItems: 1
+    items: { $ref: "#/$defs/member" }
+  group34:
+    type: array
+    minItems: 1
+    items: { $ref: "#/$defs/member" }
+
+$defs:
+  member:
+    type: object
+    required: [role, name]
+    additionalProperties: false
+    properties:
+      role: { type: string, minLength: 1 }
+      name: { type: string, minLength: 1 }

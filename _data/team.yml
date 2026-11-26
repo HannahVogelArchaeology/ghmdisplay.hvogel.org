@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=schemas/team.schema.yml
+group33:
+  - role: Team Lead / Dev Ops
+    name: Raphael Munoz
+  - role: Website Programmer
+    name: Tanmay Jagdale
+  - role: Website Programmer
+    name: Alec Scappa
+  - role: Documentation Editor / Test Lead
+    name: Chelsey Acosta
+  - role: Website Programmer
+    name: Mitch Davis
+  - role: UI Lead
+    name: Fardiz Khan
+
+group34:
+  - role: Project Lead
+    name: Kamrul Hasan Somo
+  - role: Front-end Lead
+    name: Jooeun Bark
+  - role: UI/UX & Accessibility Lead
+    name: Tanya Do
+  - role: QA and Testing Lead
+    name: Declan Hourigan
+  - role: Media Integration Lead
+    name: Lam Nguyen
+  - role: User Documentation Lead
+    name: Ibrahim Camara
