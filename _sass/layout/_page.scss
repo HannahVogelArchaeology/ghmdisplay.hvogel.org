@@ -5,17 +5,25 @@
 }
 
 .page-header {
-  max-width: var(--prose-max);
+  max-width: var(--container-max);
   margin-bottom: 2rem;
 }
 
 .page-header__lead {
   font-size: 1.125rem;
   color: var(--text-muted);
+  max-width: 68ch;
 }
 
 .page-content {
-  max-width: var(--prose-max);
+  max-width: var(--container-max);
+}
+
+.page-content > p,
+.page-content section > p,
+.page-content section > ul,
+.page-content section > ol {
+  max-width: 72ch;
 }
 
 .page-content h2 {

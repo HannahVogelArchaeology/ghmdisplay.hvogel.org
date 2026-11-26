@@ -21,9 +21,21 @@ next_label: Accessibility
         <p>Check out her <a href="https://researchers.mq.edu.au/en/persons/hannah-vogel/">Macquarie University Profile</a> or <a href="https://hvogel.org/">Website (hvogel.org)</a> for more information about her projects, research, outreach and advocacy.</p>
       </div>
       {%- assign bio_pic = site.data.bio_pic -%}
-      <figure class="curation__bio-figure">
-        {% include responsive-image.html src=bio_pic.url alt=bio_pic.altText class="curation__portrait" sizes="(max-width: 760px) 100vw, 340px" eager=true %}
-        <figcaption class="curation__portrait-caption">{{ bio_pic.caption | escape }}</figcaption>
+      <figure class="curation__bio-figure" data-gallery data-gallery-title="Hannah Vogel">
+        <div class="curation__bio-stage photo-stage">
+          {% include responsive-image.html src=bio_pic.url alt=bio_pic.altText class="curation__portrait" sizes="(max-width: 760px) 100vw, 340px" eager=true full=true %}
+          <button type="button"
+                  class="photo-expand-btn"
+                  data-gallery-enlarge
+                  aria-haspopup="dialog"
+                  aria-controls="photo-dialog"
+                  aria-label="Enlarge photograph of Hannah Vogel"
+                  data-kg-keys="Tab > Enter/Space"
+                  data-kg-label="Enlarge portrait photo">
+            {%- include icon.html name="maximize-2" class="icon" size=18 -%}
+          </button>
+        </div>
+        <figcaption class="curation__portrait-caption" data-gallery-caption>{{ bio_pic.caption | escape }}</figcaption>
       </figure>
     </div>
   </section>

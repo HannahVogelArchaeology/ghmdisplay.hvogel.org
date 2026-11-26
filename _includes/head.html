@@ -6,11 +6,12 @@
   <link rel="preload" href="{{ '/assets/fonts/lexend/lexend-latin-wght-normal.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
   <script>
     (function () {
+      var root = document.documentElement;
+      root.classList.add('has-js');
       try {
         var raw = localStorage.getItem('ghm_a11y_prefs');
         if (!raw) return;
         var p = JSON.parse(raw);
-        var root = document.documentElement;
         if (p && typeof p.size === 'number' && p.size >= 80 && p.size <= 200) {
           root.style.fontSize = p.size + '%';
           root.dataset.textSize = String(p.size);
@@ -34,6 +35,7 @@
   <script type="module" src="{{ '/assets/js/a11y-prefs.js' | relative_url }}"></script>
   <script type="module" src="{{ '/assets/js/site.js' | relative_url }}"></script>
   <script type="module" src="{{ '/assets/js/search.js' | relative_url }}"></script>
+  <script type="module" src="{{ '/assets/js/photo-viewer.js' | relative_url }}"></script>
   <script type="module" src="{{ '/assets/js/kiosk.js' | relative_url }}"></script>
   {%- if page.layout == 'home' -%}
   <script type="module" src="{{ '/assets/js/home-showcase.js' | relative_url }}"></script>

@@ -1,14 +1,13 @@
-// Continuous-scroll artifact catalogue cards (_includes/artifact-card.html).
+// Continuous-scroll artifact catalogue entries (_includes/artifact-card.html).
+// Crisp museum-publication framing without heavy rounded/double-bordered bubble cards.
 
 .artifact-card {
   display: grid;
-  gap: clamp(1.25rem, 3vw, 2.25rem);
+  gap: clamp(1.5rem, 3.5vw, 2.75rem);
   align-items: start;
-  padding: clamp(1rem, 2.5vw, 1.75rem);
-  background: var(--card);
-  border: 2px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--border-subtle);
+  background: transparent;
   scroll-margin-top: var(--header-clearance);
 }
 
@@ -26,14 +25,13 @@
 .artifact-gallery__figure {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
 .artifact-gallery__stage {
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,7 +39,7 @@
 
 .artifact-gallery__image {
   width: 100%;
-  max-height: 28rem;
+  max-height: 29rem;
   object-fit: contain;
   cursor: zoom-in;
 }
@@ -50,6 +48,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
 }
 
@@ -59,10 +58,6 @@
   font-weight: 600;
   color: var(--text-muted);
   padding-inline: 0.25rem;
-}
-
-.artifact-gallery__enlarge {
-  margin-left: auto;
 }
 
 .artifact-gallery__caption {
@@ -75,22 +70,22 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 0.85rem;
+  margin-top: 0.75rem;
 }
 
 .artifact-thumb {
   display: grid;
   place-items: center;
-  width: 4.25rem;
-  height: 4.25rem;
+  width: 4.5rem;
+  height: 4.5rem;
   min-width: var(--target-min);
   min-height: var(--target-min);
-  padding: 0.2rem;
-  border: 2px solid var(--border);
-  border-radius: var(--radius-sm);
+  padding: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
   background: var(--surface);
   overflow: hidden;
-  transition: border-color 150ms ease, background-color 150ms ease;
+  transition: border-color 150ms ease, opacity 150ms ease;
 }
 
 .artifact-thumb:hover {
@@ -99,15 +94,16 @@
 
 .artifact-thumb.is-active,
 .artifact-thumb[aria-pressed="true"] {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--accent);
+  border: 2px solid var(--accent);
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 
 .artifact-thumb__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: calc(var(--radius-sm) - 2px);
+  border-radius: 0;
 }
 
 .artifact-card__accession {
@@ -171,13 +167,29 @@
   margin-top: 0.75rem;
 }
 
+:root[data-theme="high-contrast"] {
+  .artifact-card {
+    padding: 1.25rem;
+    border: 2px solid var(--border);
+  }
+
+  .artifact-thumb {
+    border: 2px solid var(--border);
+  }
+}
+
 @media (forced-colors: active) {
+  .artifact-card {
+    padding: 1.25rem;
+    border: 2px solid CanvasText;
+  }
+
   .artifact-thumb {
     border: 2px solid CanvasText;
   }
 
   .artifact-thumb[aria-pressed="true"] {
     border: 3px solid Highlight;
-    box-shadow: none;
+    outline: none;
   }
 }

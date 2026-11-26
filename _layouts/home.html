@@ -34,11 +34,21 @@ layout: default
 
       {%- assign photo = page.display_image -%}
       {%- if photo and photo.url -%}
-      <figure class="home-hero__figure">
-        <div class="home-hero__media">
-          {% include responsive-image.html src="assets/images/display/Exhibition_overall.jpeg" alt=page.display_image.alt class="home-hero__image" sizes="(max-width: 900px) 100vw, 52vw" eager=true priority=true %}
+      <figure class="home-hero__figure" data-gallery data-gallery-title="{{ page.title | escape }}">
+        <div class="home-hero__media photo-stage">
+          {% include responsive-image.html src="assets/images/display/Exhibition_overall.jpeg" alt=page.display_image.alt class="home-hero__image" sizes="(max-width: 900px) 100vw, 52vw" eager=true priority=true full=true %}
+          <button type="button"
+                  class="photo-expand-btn"
+                  data-gallery-enlarge
+                  aria-haspopup="dialog"
+                  aria-controls="photo-dialog"
+                  aria-label="Enlarge photograph of the exhibition display"
+                  data-kg-keys="Tab > Enter/Space"
+                  data-kg-label="Enlarge display photo">
+            {%- include icon.html name="maximize-2" class="icon" size=18 -%}
+          </button>
         </div>
-        <figcaption class="home-hero__caption">{{ photo.caption | escape }}</figcaption>
+        <figcaption class="home-hero__caption" data-gallery-caption>{{ photo.caption | escape }}</figcaption>
       </figure>
       {%- endif -%}
     </div>
@@ -146,7 +156,24 @@ layout: default
           {%- assign shelf_url = '/shelves/' | append: key | append: '/' -%}
           {%- assign primary_img = shelf_data.images | first -%}
           <article class="shelf-showcase" aria-labelledby="shelf-heading-{{ key }}">
-            <header class="shelf-showcase__header">
+            <figure class="shelf-showcase__media" data-gallery data-gallery-title="{{ shelf_title | escape }}">
+              <div class="shelf-showcase__photo-frame photo-stage">
+                {% include responsive-image.html src=primary_img.url alt=primary_img.altText class="shelf-showcase__photo" sizes="(max-width: 819px) 100vw, 54vw" full=true %}
+                <button type="button"
+                        class="photo-expand-btn"
+                        data-gallery-enlarge
+                        aria-haspopup="dialog"
+                        aria-controls="photo-dialog"
+                        aria-label="Enlarge {{ shelf_title | escape }} photograph"
+                        data-kg-keys="Tab > Enter/Space"
+                        data-kg-label="Enlarge {{ shelf_title }} photo">
+                  {%- include icon.html name="maximize-2" class="icon" size=18 -%}
+                </button>
+              </div>
+              <figcaption class="shelf-showcase__caption" data-gallery-caption>{{ primary_img.caption | escape }}</figcaption>
+            </figure>
+
+            <div class="shelf-showcase__copy">
               <p class="shelf-showcase__meta">Shelf {{ forloop.index }} of {{ site.shelves.size }} · {{ count }} object{% if count != 1 %}s{% endif %}</p>
               <h3 class="shelf-showcase__title" id="shelf-heading-{{ key }}">
                 <a class="shelf-showcase__heading-link"
@@ -157,25 +184,11 @@ layout: default
                   <span>{{ shelf_title }}</span>
                 </a>
               </h3>
-            </header>
-
-            <div class="shelf-showcase__stage">
-              <figure class="shelf-showcase__media">
-                <div class="shelf-showcase__photo-frame">
-                  {% include responsive-image.html src=primary_img.url alt=primary_img.altText class="shelf-showcase__photo" sizes="(max-width: 759px) 100vw, min(72rem, 94vw)" %}
-                </div>
-                <figcaption class="shelf-showcase__caption">{{ primary_img.caption | escape }}</figcaption>
-              </figure>
-
-              <div class="shelf-showcase__panel-wrap">
-                <div class="shelf-showcase__panel">
-                  <p class="shelf-showcase__desc">{{ shelf_desc }}</p>
-                  <a class="btn shelf-showcase__cta"
-                     href="{{ shelf_url | relative_url }}"
-                     data-kg-keys="Tab > Enter"
-                     data-kg-label="View {{ shelf_title }}">View {{ shelf_title }} <span aria-hidden="true">&rarr;</span></a>
-                </div>
-              </div>
+              <p class="shelf-showcase__desc">{{ shelf_desc }}</p>
+              <a class="btn btn--primary shelf-showcase__cta"
+                 href="{{ shelf_url | relative_url }}"
+                 data-kg-keys="Tab > Enter"
+                 data-kg-label="View {{ shelf_title }}">View {{ shelf_title }} <span aria-hidden="true">&rarr;</span></a>
             </div>
           </article>
         {%- endfor -%}

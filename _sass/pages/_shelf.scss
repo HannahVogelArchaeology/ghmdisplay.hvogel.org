@@ -1,5 +1,5 @@
-// Shelf page layout: header, uncropped multi-photo shelf carousel,
-// "Explore the objects" in-page jump strip, and continuous-scroll catalogue.
+// Shelf page layout: crisp museum-gallery framing, uncropped multi-photo shelf carousel,
+// Group 34-inspired overlapping "Explore the objects" ribbon, and continuous-scroll catalogue.
 
 .shelf-page {
   padding-block: clamp(1.5rem, 3.5vw, 2.75rem) 3rem;
@@ -9,13 +9,13 @@
   display: grid;
   gap: clamp(1.5rem, 3.5vw, 3rem);
   align-items: start;
-  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
   scroll-margin-top: var(--header-clearance);
 }
 
 @media (min-width: 900px) {
   .shelf-header {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   }
 }
 
@@ -46,17 +46,13 @@
 }
 
 .shelf-gallery__figure {
-  background: var(--card);
-  border: 2px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 0.75rem;
-  box-shadow: var(--shadow-sm);
+  margin: 0;
 }
 
 .shelf-gallery__stage {
+  position: relative;
   background: var(--surface);
-  border-radius: var(--radius-md);
-  overflow: hidden;
+  border: 1px solid var(--border-subtle);
 }
 
 .shelf-gallery__image {
@@ -66,28 +62,15 @@
   cursor: zoom-in;
 }
 
-.shelf-gallery__bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
-}
-
 .shelf-gallery__status {
-  margin: 0;
-  font-size: 0.9rem;
+  margin: 0.65rem 0 0;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-muted);
 }
 
-.shelf-gallery__enlarge {
-  margin-left: auto;
-}
-
 .shelf-gallery__caption {
-  margin-top: 0.65rem;
+  margin-top: 0.45rem;
   font-size: 0.875rem;
   color: var(--text-muted);
 }
@@ -108,55 +91,57 @@
   flex: 1 1 7.5rem;
   max-width: 11rem;
   min-height: var(--target-min);
-  padding: 0.35rem;
-  border: 2px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--card);
+  padding: 0;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  background: transparent;
   color: var(--text);
   text-align: left;
-  transition: border-color 150ms ease, background-color 150ms ease;
+  transition: border-color 150ms ease, opacity 150ms ease;
 }
 
 .shelf-thumb:hover {
-  background: var(--surface);
-  border-color: var(--accent);
+  border-bottom-color: var(--border);
 }
 
 .shelf-thumb.is-active,
 .shelf-thumb[aria-pressed="true"] {
-  border-color: var(--accent);
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .shelf-thumb__img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+}
+
+.shelf-thumb[aria-pressed="true"] .shelf-thumb__img {
+  border-color: var(--accent);
 }
 
 .shelf-thumb__label {
-  font-size: 0.8rem;
+  font-size: 0.825rem;
   font-weight: 600;
   line-height: 1.25;
+  padding-bottom: 0.25rem;
   color: var(--text);
 }
 
 // ---------------------------------------------------------------------------
-// "Explore the objects" In-Page Jump Strip (Middle & Bottom Shelves only)
+// "Explore the objects" Overlapping Fanned Ribbon (Group 34 aesthetic, Middle & Bottom Shelves)
 // ---------------------------------------------------------------------------
 .object-jump {
-  margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
-  padding: clamp(1rem, 2.5vw, 1.5rem);
-  background: var(--surface);
-  border: 2px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  border-top: 1px solid var(--border-subtle);
   scroll-margin-top: var(--header-clearance);
 }
 
 .object-jump__head {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .object-jump__head h2 {
@@ -172,10 +157,11 @@
 .object-jump__track {
   list-style: none;
   margin: 0;
-  padding: 0.5rem 0.25rem;
+  padding: 0.75rem 0 1.25rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr));
   gap: 0.75rem;
+  isolation: isolate;
 }
 
 .object-jump__item {
@@ -184,104 +170,123 @@
 }
 
 .object-jump__card {
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   width: 100%;
-  min-height: var(--target-min);
-  border: 2px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--card);
-  color: var(--text);
+  min-height: 17.5rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--overlay-bg);
+  color: var(--overlay-fg);
   text-decoration: none;
-  overflow: visible;
-  box-shadow: var(--shadow-sm);
-  transition: transform 220ms ease, box-shadow 220ms ease, border-color 180ms ease;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 180ms ease;
 }
 
 .object-jump__media {
+  position: absolute;
+  inset: 0;
   display: block;
   background: var(--surface);
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  border-radius: calc(var(--radius-md) - 2px) calc(var(--radius-md) - 2px) 0 0;
 }
 
 .object-jump__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 240ms ease;
+  transition: transform 320ms ease;
 }
 
 .object-jump__body {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  padding: 0.65rem 0.75rem;
-  background: var(--card);
-  border-radius: 0 0 calc(var(--radius-md) - 2px) calc(var(--radius-md) - 2px);
-  flex: 1 0 auto;
+  gap: 0.25rem;
+  padding: 2.25rem 0.85rem 0.85rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 15, 13, 0) 0%,
+    rgba(18, 15, 13, 0.86) 2rem,
+    #120f0d 100%
+  );
+  color: #ffffff;
 }
 
 .object-jump__title {
-  font-size: 0.925rem;
+  font-size: 0.95rem;
   font-weight: 700;
   line-height: 1.3;
-  color: var(--text);
+  color: #ffffff;
 }
 
 .object-jump__acc {
   font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 500;
+  color: #e8dfd3;
 }
 
 .object-jump__card:hover,
 .object-jump__card:focus-visible {
   border-color: var(--accent);
-  color: var(--text);
+  color: #ffffff;
 }
 
 .object-jump__card:hover .object-jump__title,
 .object-jump__card:focus-visible .object-jump__title {
-  color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
 
-// Horizontal magnifying preview track on wider viewports (dismissible with Esc via .is-jump-dismissed)
+// Sleek overlapping fanned gallery ribbon on wider desktop screens (dismissible with Esc)
 @media (min-width: 900px) {
   .object-jump__track {
     display: flex;
     align-items: stretch;
-    gap: 0.65rem;
+    gap: 0;
+    overflow: visible;
+    padding: 1rem 0 1.5rem;
   }
 
   .object-jump__item {
     flex: 1 1 0;
-    transition: flex-grow 260ms ease;
+    margin-left: -1rem;
+    position: relative;
+    z-index: 1;
+    transition: flex-grow 350ms ease, margin 350ms ease;
+  }
+
+  .object-jump__item:first-child {
+    margin-left: 0;
+  }
+
+  .object-jump__card {
+    min-height: 21rem;
   }
 
   .object-jump__track:not(.is-jump-dismissed) .object-jump__item:hover,
   .object-jump__track:not(.is-jump-dismissed) .object-jump__item:focus-within {
-    flex-grow: 1.75;
-    z-index: 4;
+    flex-grow: 2.3;
+    z-index: 6;
   }
 
   .object-jump__track:not(.is-jump-dismissed) .object-jump__card:hover,
   .object-jump__track:not(.is-jump-dismissed) .object-jump__card:focus-visible {
-    transform: translateY(-6px) scale(1.03);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: var(--shadow-lg);
   }
 
   .object-jump__track:not(.is-jump-dismissed) .object-jump__card:hover .object-jump__img,
   .object-jump__track:not(.is-jump-dismissed) .object-jump__card:focus-visible .object-jump__img {
-    transform: scale(1.05);
+    transform: scale(1.04);
   }
 }
 
-// Disable hover/focus magnification and switch to wrapping responsive grid under
-// reduced motion, high contrast, forced colors, large text (>= 150%), or wide spacing.
+// Wrapping non-overlapping grid with solid opaque caption band under
+// large text (>= 150%), wide spacing, high contrast, reduced motion, or forced colors.
 :root[data-text-size="150"],
 :root[data-text-size="160"],
 :root[data-text-size="170"],
@@ -292,13 +297,30 @@
 :root[data-theme="high-contrast"] {
   .object-jump__track {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    gap: 0.85rem;
   }
 
   .object-jump__item {
     flex: initial;
+    margin-left: 0;
     transition: none;
+  }
+
+  .object-jump__card {
+    min-height: auto;
+    overflow: visible;
+  }
+
+  .object-jump__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .object-jump__body {
+    padding: 0.75rem;
+    background: var(--overlay-bg);
   }
 
   .object-jump__track:not(.is-jump-dismissed) .object-jump__item:hover,
@@ -317,14 +339,15 @@
 @media (prefers-reduced-motion: reduce) {
   .object-jump__track {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    gap: 0.85rem;
   }
 
   .object-jump__item,
   .object-jump__card,
   .object-jump__img {
     flex: initial;
+    margin-left: 0;
     transition: none;
   }
 
@@ -342,39 +365,55 @@
 }
 
 :root[data-theme="high-contrast"] {
-  .shelf-gallery__figure,
-  .object-jump,
+  .shelf-gallery__stage,
   .object-jump__card,
-  .shelf-thumb {
+  .shelf-thumb__img {
     border: 2px solid var(--border);
     box-shadow: none;
   }
 }
 
 @media (forced-colors: active) {
-  .shelf-gallery__figure,
-  .object-jump,
+  .shelf-gallery__stage,
   .object-jump__card,
-  .shelf-thumb {
+  .shelf-thumb__img {
     border: 2px solid CanvasText;
     box-shadow: none;
   }
 
-  .shelf-thumb[aria-pressed="true"] {
+  .shelf-thumb[aria-pressed="true"] .shelf-thumb__img {
     border: 3px solid Highlight;
   }
 
   .object-jump__track {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    gap: 0.85rem;
   }
 
   .object-jump__item,
   .object-jump__card,
   .object-jump__img {
     flex: initial;
+    margin-left: 0;
     transition: none;
+  }
+
+  .object-jump__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .object-jump__body {
+    padding: 0.75rem;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .object-jump__title,
+  .object-jump__acc {
+    color: CanvasText;
   }
 
   .object-jump__track:not(.is-jump-dismissed) .object-jump__item:hover,
@@ -394,5 +433,5 @@
 .artifact-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.75rem, 3.5vw, 2.75rem);
+  gap: clamp(2.5rem, 5vw, 4rem);
 }

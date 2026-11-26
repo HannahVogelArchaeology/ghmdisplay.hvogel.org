@@ -137,11 +137,11 @@
 }
 
 .site-nav.is-open .site-nav__list,
-.site-nav:not(.has-js) .site-nav__list {
+html:not(.has-js) .site-nav__list {
   display: flex;
 }
 
-.site-nav:not(.has-js) .site-nav__list {
+html:not(.has-js) .site-nav__list {
   position: static;
   flex-direction: row;
   flex-wrap: wrap;

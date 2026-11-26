@@ -21,13 +21,10 @@ layout: default
 
     <div class="shelf-header__media" data-gallery data-gallery-title="{{ shelf_data.title | escape }}">
       <figure class="shelf-gallery__figure">
-        <div class="shelf-gallery__stage">
+        <div class="shelf-gallery__stage photo-stage">
           {% include responsive-image.html src=primary_img.url alt=primary_img.altText class="shelf-gallery__image" sizes="(min-width: 960px) 52vw, 100vw" eager=true priority=true full=true %}
-        </div>
-        <div class="shelf-gallery__bar">
-          <p class="shelf-gallery__status" role="status" aria-live="polite" data-gallery-status>{% if shelf_data.images.size > 1 %}View 1 of {{ shelf_data.images.size }}: {{ primary_img.label | escape }}{% endif %}</p>
           <button type="button"
-                  class="btn shelf-gallery__enlarge"
+                  class="photo-expand-btn shelf-gallery__enlarge"
                   data-gallery-enlarge
                   aria-haspopup="dialog"
                   aria-controls="photo-dialog"
@@ -35,9 +32,11 @@ layout: default
                   data-kg-keys="Tab > Enter/Space"
                   data-kg-label="Enlarge shelf photo">
             {%- include icon.html name="maximize-2" class="icon" size=18 -%}
-            <span>Enlarge</span>
           </button>
         </div>
+        {%- if shelf_data.images.size > 1 -%}
+        <p class="shelf-gallery__status" role="status" aria-live="polite" data-gallery-status>View 1 of {{ shelf_data.images.size }}: {{ primary_img.label | escape }}</p>
+        {%- endif -%}
         <figcaption class="shelf-gallery__caption" data-gallery-caption>{{ primary_img.caption | escape }}</figcaption>
       </figure>
 
@@ -69,7 +68,7 @@ layout: default
   <section class="object-jump" aria-labelledby="explore-objects-heading" data-step>
     <div class="object-jump__head">
       <h2 id="explore-objects-heading">Explore the objects</h2>
-      <p class="object-jump__hint" id="object-jump-hint">Select an object below to jump directly to its catalogue entry on this page.</p>
+      <p class="object-jump__hint" id="object-jump-hint">Hover over or focus an object to bring it forward. Select an object to jump directly to its catalogue entry on this page.</p>
     </div>
     <ul class="object-jump__track"
         role="list"
@@ -85,11 +84,11 @@ layout: default
         <li class="object-jump__item">
           <a class="object-jump__card" href="#art-{{ slug }}" data-jump-target="art-{{ slug }}">
             <span class="object-jump__media">
-              {% include responsive-image.html src=lead_img.url alt=lead_img.altText class="object-jump__img" sizes="(max-width: 759px) 45vw, 240px" %}
+              {% include responsive-image.html src=lead_img.url alt=lead_img.altText class="object-jump__img" sizes="(max-width: 759px) 48vw, 280px" %}
             </span>
             <span class="object-jump__body">
               <span class="object-jump__title">{{ num }}. {{ m.name | escape }}</span>
-              <span class="object-jump__acc">{{ m.accNo | escape }}</span>
+              <span class="object-jump__acc">{{ m.accNo | escape }} · {{ m.material | escape }}</span>
             </span>
           </a>
         </li>
@@ -107,74 +106,6 @@ layout: default
 
   {%- include page-turn.html prev_url=page.prev_url prev_label=page.prev_label next_url=page.next_url next_label=page.next_label -%}
 </div>
-
-<dialog id="photo-dialog" class="photo-viewer" aria-labelledby="photo-dialog-title">
-  <div class="photo-viewer__bar">
-    <div class="photo-viewer__heading-wrap">
-      <h2 class="photo-viewer__title" id="photo-dialog-title">Photo viewer</h2>
-      <p class="photo-viewer__count" role="status" aria-live="polite" data-pv-count></p>
-    </div>
-
-    <div class="photo-viewer__toolbar">
-      <div class="photo-viewer__zoom" role="group" aria-label="Zoom controls">
-        <button type="button" class="photo-viewer__btn" data-pv-zoom="out" aria-label="Zoom out" aria-disabled="true">
-          {%- include icon.html name="zoom-out" class="icon" size=18 -%}
-          <span class="photo-viewer__btn-label">Zoom out</span>
-        </button>
-        <button type="button" class="photo-viewer__btn" data-pv-zoom="in" aria-label="Zoom in" aria-disabled="false">
-          {%- include icon.html name="zoom-in" class="icon" size=18 -%}
-          <span class="photo-viewer__btn-label">Zoom in</span>
-        </button>
-        <button type="button" class="photo-viewer__btn" data-pv-zoom="reset" aria-label="Reset view" aria-disabled="true">
-          {%- include icon.html name="rotate-ccw" class="icon" size=18 -%}
-          <span class="photo-viewer__btn-label">Reset view</span>
-        </button>
-      </div>
-
-      <button type="button" class="photo-viewer__btn photo-viewer__close" data-pv-close aria-label="Close photo viewer">
-        {%- include icon.html name="x" class="icon" size=18 -%}
-        <span>Close</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="photo-viewer__stage" data-pv-stage>
-    <img class="photo-viewer__image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Selected exhibition photograph" draggable="false" data-pv-image>
-
-    <button type="button" class="photo-viewer__step photo-viewer__prev" data-pv-prev aria-label="Previous photo">
-      {%- include icon.html name="chevron-left" class="icon" size=24 -%}
-    </button>
-    <button type="button" class="photo-viewer__step photo-viewer__next" data-pv-next aria-label="Next photo">
-      {%- include icon.html name="chevron-right" class="icon" size=24 -%}
-    </button>
-
-    <div class="photo-viewer__pan" role="group" aria-label="Pan zoomed photograph" data-pv-pan>
-      <button type="button" class="photo-viewer__pan-btn photo-viewer__pan-btn--up" data-pv-pan-dir="up" aria-label="Pan up" aria-disabled="true">
-        {%- include icon.html name="arrow-up" class="icon" size=18 -%}
-      </button>
-      <button type="button" class="photo-viewer__pan-btn photo-viewer__pan-btn--left" data-pv-pan-dir="left" aria-label="Pan left" aria-disabled="true">
-        {%- include icon.html name="arrow-left" class="icon" size=18 -%}
-      </button>
-      <button type="button" class="photo-viewer__pan-btn photo-viewer__pan-btn--right" data-pv-pan-dir="right" aria-label="Pan right" aria-disabled="true">
-        {%- include icon.html name="arrow-right" class="icon" size=18 -%}
-      </button>
-      <button type="button" class="photo-viewer__pan-btn photo-viewer__pan-btn--down" data-pv-pan-dir="down" aria-label="Pan down" aria-disabled="true">
-        {%- include icon.html name="arrow-down" class="icon" size=18 -%}
-      </button>
-    </div>
-  </div>
-
-  <div class="photo-viewer__foot">
-    <p class="photo-viewer__caption" data-pv-caption></p>
-    <p class="photo-viewer__keys" aria-hidden="true">
-      <span><kbd>←</kbd><kbd>→</kbd> Photos or pan</span>
-      <span><kbd>+</kbd><kbd>−</kbd> Zoom</span>
-      <span><kbd>0</kbd> Reset</span>
-      <span><kbd>Esc</kbd> Close</span>
-    </p>
-  </div>
-  <p class="visually-hidden" role="status" aria-live="polite" data-pv-status></p>
-</dialog>
 
 <dialog id="model-dialog" class="model-dialog" aria-labelledby="model-dialog-title">
   <div class="model-dialog__bar">

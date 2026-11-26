@@ -85,12 +85,18 @@ test.describe('Outcome 3C: Curation, Accessibility Page, 404 & Repository Govern
       await expect(licenseSection).toContainText(asset);
     }
 
+    // Curator portrait opens shared lightbox cleanly
+    await page.locator('.curation__bio-figure [data-gallery-enlarge]').click();
+    await expect(page.locator('#photo-dialog')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#photo-dialog')).toBeHidden();
+
     // Page-turn navigation
     await expect(page.locator('.page-turn__link--prev')).toHaveAttribute('href', '/shelves/bottom/');
     await expect(page.locator('.page-turn__link--next')).toHaveAttribute('href', '/accessibility/');
   });
 
-  test('/accessibility/ TOC anchors, truthful WCAG 2.1.4 disclosure, zero stale shortcuts, and updated on-campus dates', async ({ page }) => {
+  test('/accessibility/ TOC anchors, clean visitor prose (no experimental scar-tissue callout), zero stale shortcuts, and updated on-campus dates', async ({ page }) => {
     await page.goto('/accessibility/');
 
     // Heading without Visiting eyebrow or 01-03 numbering
@@ -147,12 +153,15 @@ test.describe('Outcome 3C: Curation, Accessibility Page, 404 & Repository Govern
       'Shift+↑',
       'Ctrl+K',
       'Cmd+K',
-      'WCAG 2.1.4',
-      'Disability Research Leaders Community of Practice',
       'Keyboard Guide',
     ]) {
       await expect(main).toContainText(term);
     }
+
+    // No internal experimental WCAG 2.1.4 scar-tissue callout on public exhibition page
+    await expect(page.locator('.accessibility__callout')).toHaveCount(0);
+    expect(mainText).not.toMatch(/experimental single-character/i);
+    expect(mainText).not.toMatch(/WCAG 2\.1\.4 disclosure/i);
 
     // Zero stale Group 33 shortcut claims
     expect(mainText).not.toMatch(/tabindex="-1"/i);

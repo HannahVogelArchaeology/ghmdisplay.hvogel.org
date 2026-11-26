@@ -30,7 +30,7 @@ next_label: Home
       <li><strong>Reading font:</strong> Self-hosted <strong>Lexend</strong> is the default typeface, selected to reduce visual crowding. You can switch between four self-hosted typefaces: <strong>Lexend</strong>, <strong>Atkinson Hyperlegible</strong> (created by the Braille Institute for low-vision legibility), <strong>OpenDyslexic</strong>, and <strong>Gentium</strong> (a serif option).</li>
       <li><strong>Text spacing (anti-crowding):</strong> Choose <strong>Default</strong>, <strong>Relaxed</strong>, or <strong>Wide</strong> spacing to expand line height, paragraph gaps, letter spacing, and word spacing up to WCAG 1.4.12 thresholds. When Lexend is active, the spacing dial also steps automatically to wider Lexend letter-spacing grades.</li>
       <li><strong>Text size:</strong> Adjust root text size between <strong>80% and 200%</strong> using relative (<code>rem</code>) scaling so columns, controls, and tables reflow cleanly without clipping or horizontal scrolling.</li>
-      <li><strong>Display themes and system preferences:</strong> Switch between <strong>Auto</strong> (matching your device setting), warm archival-paper <strong>Light</strong>, warm charcoal <strong>Dark</strong>, and stripped-back <strong>High Contrast</strong>. The site also honours Windows High Contrast (<code>forced-colors: active</code>), increased system contrast (<code>prefers-contrast: more</code>), and reduced motion (<code>prefers-reduced-motion: reduce</code>). Under reduced motion, narrow viewports, High Contrast, or enlarged text, animated homepage shelf panels automatically present as a static vertical layout.</li>
+      <li><strong>Display themes and system preferences:</strong> Switch between <strong>Auto</strong> (matching your device setting), warm archival-paper <strong>Light</strong>, warm charcoal <strong>Dark</strong>, and stripped-back <strong>High Contrast</strong>. The site also honours Windows High Contrast (<code>forced-colors: active</code>), increased system contrast (<code>prefers-contrast: more</code>), and reduced motion (<code>prefers-reduced-motion: reduce</code>).</li>
     </ul>
 
     <h3>Multimodal exhibition media and privacy</h3>
@@ -52,16 +52,11 @@ next_label: Home
 
     <h3>Site Search and keyboard shortcuts</h3>
     <ul>
-      <li><strong>Search exhibition:</strong> Open Site Search from the <strong>Search</strong> button in the header, by pressing <kbd>Ctrl</kbd>+<kbd>K</kbd> (<kbd>Cmd</kbd>+<kbd>K</kbd> on macOS), or by pressing <kbd>/</kbd>. Search matches object numbers, titles, accession numbers, materials, shelves, and site pages; use <kbd>↑</kbd> and <kbd>↓</kbd> or <kbd>Tab</kbd> to move through results and <kbd>Enter</kbd> to jump directly to an object or page.</li>
+      <li><strong>Search exhibition:</strong> Open Site Search from the <strong>Search</strong> button in the header, by pressing <kbd>Ctrl</kbd>+<kbd>K</kbd> (<kbd>Cmd</kbd>+<kbd>K</kbd> on macOS), or by pressing <kbd>/</kbd> outside text fields and dialogues. Search matches object numbers, titles, accession numbers, materials, shelves, and site pages; use <kbd>↑</kbd> and <kbd>↓</kbd> or <kbd>Tab</kbd> to move through results and <kbd>Enter</kbd> to jump directly to an object or page.</li>
       <li><strong>Section stepper and back to top:</strong> Long pages include buttons to step between headings or return to the top navigation bar. Outside form fields and open dialogues, <kbd>Shift</kbd>+<kbd>↑</kbd> also returns focus to the top of the page.</li>
       <li><strong>Visual Keyboard Guide:</strong> Turn on <strong>Keyboard Guide</strong> inside the Accessibility panel to display visual key badges beside interactive controls and a key legend at the top of the page without changing tab order.</li>
-      <li><strong>Enlarged photo viewer:</strong> Use the on-screen buttons or <kbd>+</kbd>, <kbd>−</kbd>, and <kbd>0</kbd> to zoom and fit, single-click pan buttons or arrow keys to move around a zoomed photograph or switch views, and <kbd>Esc</kbd> to close.</li>
+      <li><strong>Enlarged photo viewer:</strong> Select any photograph or its Enlarge button to open the full-screen viewer. Use the on-screen buttons or <kbd>+</kbd>, <kbd>−</kbd>, and <kbd>0</kbd> to zoom and fit, drag or use the single-click pan buttons and arrow keys to move around a zoomed photograph, and press <kbd>Esc</kbd> to close.</li>
     </ul>
-
-    <div class="accessibility__callout" role="note" aria-labelledby="wcag-214-heading">
-      <h3 id="wcag-214-heading">Experimental single-character search shortcut (WCAG 2.1.4 disclosure)</h3>
-      <p>The bare <kbd>/</kbd> shortcut for opening Site Search is a single-character keyboard shortcut under WCAG 2.1.4 (Character Key Shortcuts). We have included it deliberately as an experimental feature currently under evaluation with the Disability Research Leaders Community of Practice. To avoid interfering with typing, <kbd>/</kbd> is ignored whenever focus is inside a text field, form control, or open dialogue. Visitors using voice control or screen reader browse modes can always use the <strong>Search</strong> button or <kbd>Ctrl</kbd>+<kbd>K</kbd> (<kbd>Cmd</kbd>+<kbd>K</kbd>). If community testing identifies accidental triggers or conflicts with assistive technologies, the bare <kbd>/</kbd> binding will be removed.</p>
-    </div>
   </section>
 
   <section class="accessibility__section" aria-labelledby="on-campus-visitor-information">

@@ -33,12 +33,22 @@
        data-gallery
        data-gallery-title="{{ num }}. {{ m.name | escape }}">
     <figure class="artifact-gallery__figure">
-      <div class="artifact-gallery__stage">
+      <div class="artifact-gallery__stage photo-stage">
         {% include responsive-image.html src=first_img.url alt=first_img.altText class="artifact-gallery__image" sizes="(max-width: 899px) 100vw, 480px" eager=include.first full=true %}
+        <button type="button"
+                class="photo-expand-btn artifact-gallery__enlarge"
+                data-gallery-enlarge
+                aria-haspopup="dialog"
+                aria-controls="photo-dialog"
+                aria-label="Enlarge photograph of {{ num }}. {{ m.name | escape }}"
+                data-kg-keys="Tab > Enter/Space"
+                data-kg-label="Enlarge photo">
+          {%- include icon.html name="maximize-2" class="icon" size=18 -%}
+        </button>
       </div>
 
+      {%- if art.images.size > 1 -%}
       <div class="artifact-gallery__controls" role="group" aria-label="Photograph controls for {{ num }}. {{ m.name | escape }}">
-        {%- if art.images.size > 1 -%}
         <button type="button"
                 class="btn artifact-gallery__nav"
                 data-gallery-prev
@@ -48,11 +58,9 @@
           {%- include icon.html name="chevron-left" class="icon" size=18 -%}
           <span>Previous</span>
         </button>
-        {%- endif -%}
 
         <p class="artifact-gallery__status" role="status" aria-live="polite" data-gallery-status>Photo 1 of {{ art.images.size }}</p>
 
-        {%- if art.images.size > 1 -%}
         <button type="button"
                 class="btn artifact-gallery__nav"
                 data-gallery-next
@@ -62,20 +70,8 @@
           <span>Next</span>
           {%- include icon.html name="chevron-right" class="icon" size=18 -%}
         </button>
-        {%- endif -%}
-
-        <button type="button"
-                class="btn artifact-gallery__enlarge"
-                data-gallery-enlarge
-                aria-haspopup="dialog"
-                aria-controls="photo-dialog"
-                aria-label="Enlarge photograph of {{ num }}. {{ m.name | escape }}"
-                data-kg-keys="Tab > Enter/Space"
-                data-kg-label="Enlarge photo">
-          {%- include icon.html name="maximize-2" class="icon" size=18 -%}
-          <span>Enlarge</span>
-        </button>
       </div>
+      {%- endif -%}
 
       <figcaption class="artifact-gallery__caption" data-gallery-caption>{{ first_img.caption | escape }}</figcaption>
     </figure>

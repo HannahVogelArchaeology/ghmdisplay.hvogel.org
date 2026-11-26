@@ -147,8 +147,15 @@ test.describe('Homepage & Dual Video Showcase (Outcome 3A)', () => {
     expect(mainText).not.toMatch(/\b(TBC|TODO|CHECK|Lorem)\b/);
   });
 
-  test('renders 3 linked shelf showcases with icons, uncropped photos, opaque dark panels, and accessible controls', async ({ page }) => {
+  test('renders 3 linked side-by-side shelf showcases with icons, uncropped photos, and site-wide photo lightbox', async ({ page }) => {
     await page.goto('/');
+
+    // Hero display photo opens shared zoomable lightbox
+    await page.locator('.home-hero__figure [data-gallery-enlarge]').click();
+    await expect(page.locator('#photo-dialog')).toBeVisible();
+    await expect(page.locator('#photo-dialog [data-pv-caption]')).toContainText('Disability Heritage: Archaeology with Difference');
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#photo-dialog')).toBeHidden();
 
     const showcases = page.locator('.shelf-showcase');
     await expect(showcases).toHaveCount(3);
@@ -179,7 +186,7 @@ test.describe('Homepage & Dual Video Showcase (Outcome 3A)', () => {
       expect(ctaBox.width).toBeGreaterThanOrEqual(44);
       expect(ctaBox.height).toBeGreaterThanOrEqual(44);
 
-      // Uncropped photo, non-empty alt, zero title attribute
+      // Uncropped photo with overlaid lightbox enlarge trigger, non-empty alt, zero title attribute
       const photo = card.locator('img.shelf-showcase__photo');
       const photoCheck = await photo.evaluate(img => ({
         alt: img.getAttribute('alt') || '',
@@ -189,14 +196,7 @@ test.describe('Homepage & Dual Video Showcase (Outcome 3A)', () => {
       expect(photoCheck.alt.length).toBeGreaterThan(20);
       expect(photoCheck.title).toBeNull();
       expect(photoCheck.objectFit).not.toBe('cover');
-
-      // 100% opaque dark panel (no rgba alpha < 1 and opacity === '1')
-      const panelStyle = await card.locator('.shelf-showcase__panel').evaluate(el => {
-        const s = getComputedStyle(el);
-        return { bg: s.backgroundColor, opacity: s.opacity };
-      });
-      expect(panelStyle.opacity).toBe('1');
-      expect(panelStyle.bg).toMatch(/^rgb\(\d+,\s*\d+,\s*\d+\)$/);
+      await expect(card.locator('[data-gallery-enlarge]')).toHaveCount(1);
     }
 
     // Zero tabindex="-1" on interactive controls inside <main> and WCAG 2.5.3 Label in Name check
@@ -220,77 +220,42 @@ test.describe('Homepage & Dual Video Showcase (Outcome 3A)', () => {
     expect(violations.badLabels).toEqual([]);
   });
 
-  test('enables sticky scroll-rising showcase on desktop default and falls back cleanly under reduced motion, high-contrast, >=150%/200% text size, wide spacing, and 390x844 mobile', async ({ page }, testInfo) => {
+  test('renders side-by-side shelf rows cleanly on desktop and stacks without overflow on mobile and at 200% text size', async ({ page }, testInfo) => {
     if (testInfo.project.name === 'desktop-chromium') {
       await page.setViewportSize({ width: 1280, height: 800 });
-      await page.emulateMedia({ reducedMotion: 'no-preference' });
       await page.goto('/');
 
-      // Desktop default uses sticky positioning on shelf media
-      const desktopPosition = await page.locator('.shelf-showcase__media').first().evaluate(el => getComputedStyle(el).position);
-      expect(desktopPosition).toBe('sticky');
-
-      // Fallback 1: prefers-reduced-motion: reduce -> static vertical stack
-      await page.emulateMedia({ reducedMotion: 'reduce' });
-      const reducedPos = await page.locator('.shelf-showcase__media').first().evaluate(el => getComputedStyle(el).position);
-      expect(reducedPos).toBe('static');
-      await page.emulateMedia({ reducedMotion: 'no-preference' });
-
-      // Fallback 2: High Contrast theme -> static vertical stack
-      await page.evaluate(() => window.ghmA11y.setPrefs({ theme: 'high-contrast' }));
-      const hcPos = await page.locator('.shelf-showcase__media').first().evaluate(el => getComputedStyle(el).position);
-      expect(hcPos).toBe('static');
-      await page.evaluate(() => window.ghmA11y.resetAll(true));
-
-      // Fallback 3: text size >= 150% and 200% -> html.showcase-static + static position + zero horizontal overflow
-      await page.evaluate(() => window.ghmA11y.setPrefs({ size: 150 }));
-      await expect(page.locator('html')).toHaveClass(/showcase-static/);
-      const pos150 = await page.locator('.shelf-showcase__media').first().evaluate(el => getComputedStyle(el).position);
-      expect(pos150).toBe('static');
-
-      await page.evaluate(() => window.ghmA11y.setPrefs({ size: 200 }));
-      const check200 = await page.evaluate(() => {
+      // Desktop side-by-side: shelf copy sits to the right of the uncropped photo (no sticky scroll overlay)
+      const desktopLayout = await page.evaluate(() => {
         const media = document.querySelector('.shelf-showcase__media').getBoundingClientRect();
-        const panel = document.querySelector('.shelf-showcase__panel').getBoundingClientRect();
+        const copy = document.querySelector('.shelf-showcase__copy').getBoundingClientRect();
         return {
-          hasStaticClass: document.documentElement.classList.contains('showcase-static'),
-          position: getComputedStyle(document.querySelector('.shelf-showcase__media')).position,
-          overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-          panelBelowMedia: panel.top >= media.bottom - 1,
+          mediaPos: getComputedStyle(document.querySelector('.shelf-showcase__media')).position,
+          sideBySide: copy.left >= media.right - 2,
         };
       });
-      expect(check200.hasStaticClass).toBe(true);
-      expect(check200.position).toBe('static');
-      expect(check200.overflowX).toBeLessThanOrEqual(1);
-      expect(check200.panelBelowMedia).toBe(true);
+      expect(desktopLayout.mediaPos).toBe('static');
+      expect(desktopLayout.sideBySide).toBe(true);
 
-      // Fallback 4: expanded spacing ('wide') -> html.showcase-static + static position
-      await page.evaluate(() => window.ghmA11y.setPrefs({ size: 100, spacing: 'wide' }));
-      await expect(page.locator('html')).toHaveClass(/showcase-static/);
-      const widePos = await page.locator('.shelf-showcase__media').first().evaluate(el => getComputedStyle(el).position);
-      expect(widePos).toBe('static');
-
-      // Reset restores sticky mode
+      // 200% text size + wide spacing -> zero horizontal overflow
+      await page.evaluate(() => window.ghmA11y.setPrefs({ size: 200, spacing: 'wide' }));
+      const overflow200 = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      expect(overflow200).toBeLessThanOrEqual(1);
       await page.evaluate(() => window.ghmA11y.resetAll(true));
-      await expect(page.locator('html')).not.toHaveClass(/showcase-static/);
-      const restoredPos = await page.locator('.shelf-showcase__media').first().evaluate(el => getComputedStyle(el).position);
-      expect(restoredPos).toBe('sticky');
     }
 
-    // Fallback 5: Mobile 390x844 (< 760px) -> static stack + zero horizontal overflow
+    // Mobile 390x844 -> stacked vertically with zero horizontal overflow
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
     const mobileCheck = await page.evaluate(() => {
-      const media = document.querySelector('.shelf-showcase__media');
-      const panel = document.querySelector('.shelf-showcase__panel');
+      const media = document.querySelector('.shelf-showcase__media').getBoundingClientRect();
+      const copy = document.querySelector('.shelf-showcase__copy').getBoundingClientRect();
       return {
-        position: getComputedStyle(media).position,
         overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-        panelBelowMedia: panel.getBoundingClientRect().top >= media.getBoundingClientRect().bottom - 1,
+        stacked: copy.top >= media.bottom - 1,
       };
     });
-    expect(mobileCheck.position).toBe('static');
     expect(mobileCheck.overflowX).toBeLessThanOrEqual(1);
-    expect(mobileCheck.panelBelowMedia).toBe(true);
+    expect(mobileCheck.stacked).toBe(true);
   });
 });

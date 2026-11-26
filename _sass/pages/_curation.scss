@@ -24,8 +24,14 @@
 
 .curation__bio-figure {
   flex: 0 0 auto;
-  width: min(100%, 15.5rem);
+  width: min(100%, 19rem);
   margin: 0;
+}
+
+.curation__bio-stage {
+  position: relative;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--surface);
 }
 
 .curation__portrait {
@@ -34,9 +40,7 @@
   height: auto;
   aspect-ratio: 11 / 12;
   object-fit: cover;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background-color: var(--surface);
+  cursor: zoom-in;
 }
 
 .curation__portrait-caption {
@@ -45,10 +49,11 @@
   color: var(--text-muted);
 }
 
-// Website Development Team (Group 33 & Group 34 Role + Name lists)
+// Website Development Team (Group 33 & Group 34 side-by-side on wider viewports)
 .curation__teams {
   display: grid;
-  gap: 1.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  gap: 2rem 3rem;
   margin-top: 1.25rem;
 }
 
