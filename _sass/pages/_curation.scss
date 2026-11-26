@@ -1,1 +1,157 @@
-// Wave 3 disjoint partial stub.
+// Curation & Acknowledgements page (pages/curation.md).
+// Consumes semantic WCAG 2.2 AAA tokens only; zero !important declarations.
+
+.curation__section {
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.curation__section:last-child {
+  margin-bottom: 0;
+}
+
+// Curator biography and portrait
+.curation__bio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1.5rem 2rem;
+}
+
+.curation__bio-text {
+  flex: 1 1 18rem;
+  min-width: 0;
+}
+
+.curation__bio-figure {
+  flex: 0 0 auto;
+  width: min(100%, 15.5rem);
+  margin: 0;
+}
+
+.curation__portrait {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 11 / 12;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+}
+
+.curation__portrait-caption {
+  margin-top: 0.55rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+// Website Development Team (Group 33 & Group 34 Role + Name lists)
+.curation__teams {
+  display: grid;
+  gap: 1.75rem;
+  margin-top: 1.25rem;
+}
+
+.curation__team-group h3 {
+  margin-top: 0;
+  margin-bottom: 0.65rem;
+}
+
+.curation__team {
+  margin: 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.curation__team-item {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: 0.35rem 1.5rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.curation__team dt {
+  margin: 0;
+  min-width: 0;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.curation__team dd {
+  margin: 0;
+  min-width: 0;
+  color: var(--text);
+}
+
+// Software & Asset Licences tables
+.curation .table-scroll {
+  margin-top: 1.25rem;
+}
+
+.curation .table-scroll + .table-scroll {
+  margin-top: 1.75rem;
+}
+
+.curation__licenses {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.curation__caption {
+  padding: 0.85rem 0.9rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.curation__licenses tbody th[scope="row"] {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.curation__license-use {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.curation__licenses a {
+  overflow-wrap: anywhere;
+}
+
+.curation__licenses tbody tr:last-child th,
+.curation__licenses tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (max-width: 600px) {
+  .curation__bio {
+    flex-direction: column-reverse;
+  }
+
+  .curation__bio-figure {
+    width: min(100%, 14rem);
+  }
+
+  .curation__team-item {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
+:root[data-theme="high-contrast"] {
+  .curation__portrait,
+  .curation .table-scroll {
+    border: 2px solid var(--border);
+  }
+}
+
+@media (forced-colors: active) {
+  .curation__portrait,
+  .curation .table-scroll {
+    border: 2px solid CanvasText;
+  }
+}

@@ -1,0 +1,22 @@
+{%- assign rows = site.data.licenses | where: "used_for", include.used_for | sort_natural: "name" -%}
+<div class="table-scroll" role="region" aria-label="{{ include.caption | escape }}" tabindex="0">
+  <table class="curation__licenses">
+    <caption class="curation__caption">{{ include.caption | escape }}</caption>
+    <thead>
+      <tr>
+        <th scope="col">Asset</th>
+        <th scope="col">Licence</th>
+        <th scope="col">Author</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for row in rows -%}
+      <tr>
+        <th scope="row">{{ row.name | escape }}{% if row.use %} <span class="curation__license-use">({{ row.use | escape }})</span>{% endif %}</th>
+        <td><a href="{{ row.licence.url }}">{{ row.licence.name | escape }}</a>{% if row.licence.note %} ({{ row.licence.note | escape }}){% endif %}</td>
+        <td><a href="{{ row.author.url }}">{{ row.author.name | escape }}</a></td>
+      </tr>
+      {%- endfor -%}
+    </tbody>
+  </table>
+</div>

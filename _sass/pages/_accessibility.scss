@@ -1,1 +1,122 @@
-// Wave 3 disjoint partial stub.
+// Accessibility page (pages/accessibility.md) and 404 recovery page (pages/404.md).
+// Consumes semantic WCAG 2.2 AAA tokens only; zero !important declarations.
+
+.toc-nav {
+  margin-bottom: 2rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.toc-nav__title {
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.toc-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.toc-nav__list li {
+  margin: 0;
+}
+
+.toc-nav__list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  padding: 0.35rem 0;
+  font-weight: 600;
+}
+
+.accessibility__section {
+  margin-bottom: clamp(2rem, 5vw, 3.25rem);
+}
+
+.accessibility__section:last-child {
+  margin-bottom: 0;
+}
+
+.accessibility__callout {
+  margin-block: 1.5rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+}
+
+.accessibility__callout h3 {
+  margin-top: 0;
+}
+
+.accessibility code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 0.1em 0.35em;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+// 404 Page Not Found navigation
+.not-found__nav {
+  margin-top: 1.75rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.not-found__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.not-found__list li {
+  margin: 0;
+}
+
+.not-found__list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  padding: 0.35rem 0;
+  font-weight: 600;
+}
+
+:root[data-theme="high-contrast"] {
+  .toc-nav,
+  .accessibility__callout,
+  .not-found__nav {
+    border: 2px solid var(--border);
+  }
+
+  .accessibility__callout {
+    border-left: 4px solid var(--accent);
+  }
+}
+
+@media (forced-colors: active) {
+  .toc-nav,
+  .accessibility__callout,
+  .not-found__nav {
+    border: 2px solid CanvasText;
+  }
+
+  .accessibility__callout {
+    border-left: 4px solid Highlight;
+  }
+}
