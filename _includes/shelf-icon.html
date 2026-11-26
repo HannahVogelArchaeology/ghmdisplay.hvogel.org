@@ -1,0 +1,8 @@
+{%- assign shelf = include.shelf | default: 'top' -%}
+{%- assign size = include.size | default: 28 -%}
+<svg{% if include.class %} class="{{ include.class }}"{% endif %} width="{{ size }}" height="{{ size }}" viewBox="0 0 30 30" fill="none" stroke="currentColor" aria-hidden="true" focusable="false">
+  <rect x="3" y="2" width="24" height="26" rx="2" stroke-width="1.8"/>
+  <line x1="3" x2="27" y1="8" y2="8" stroke-width="{% if shelf == 'top' %}4.2{% else %}1.6{% endif %}"{% unless shelf == 'top' %} opacity="0.38"{% endunless %}/>
+  <line x1="3" x2="27" y1="16" y2="16" stroke-width="{% if shelf == 'middle' %}4.2{% else %}1.6{% endif %}"{% unless shelf == 'middle' %} opacity="0.38"{% endunless %}/>
+  <line x1="3" x2="27" y1="24" y2="24" stroke-width="{% if shelf == 'bottom' %}4.2{% else %}1.6{% endif %}"{% unless shelf == 'bottom' %} opacity="0.38"{% endunless %}/>
+</svg>

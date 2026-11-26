@@ -1,0 +1,53 @@
+---
+layout: null
+---
+[
+  {
+    "type": "page",
+    "title": "Home — Disability Heritage: Archaeology with Difference",
+    "shelf": "Site page",
+    "url": "{{ '/' | relative_url }}",
+    "snippet": "Exhibition overview, Video Introduction, Auslan Introduction, and the three display shelves."
+  },
+  {
+    "type": "page",
+    "title": "Curation & Acknowledgements",
+    "shelf": "Site page",
+    "url": "{{ '/curation/' | relative_url }}",
+    "snippet": "Curator Hannah Vogel, acknowledgements, thanks, funding bodies, website development team, and licences."
+  },
+  {
+    "type": "page",
+    "title": "Accessibility",
+    "shelf": "Site page",
+    "url": "{{ '/accessibility/' | relative_url }}",
+    "snippet": "Website accessibility features, display settings, keyboard and screen reader tools, Auslan, captions, and Gale History Museum visitor access."
+  }
+  {%- assign obj_num = 0 -%}
+  {%- for shelf_key in site.shelves -%}
+    {%- assign shelf = site.data.shelves[shelf_key] -%}
+    {%- assign shelf_url = '/shelves/' | append: shelf_key | append: '/' | relative_url -%}
+  ,{
+    "type": "shelf",
+    "title": {{ shelf.title | jsonify }},
+    "shelf": "Exhibition shelf",
+    "url": {{ shelf_url | jsonify }},
+    "snippet": {{ shelf.description | jsonify }}
+  }
+    {%- for art in shelf.artifacts -%}
+      {%- assign obj_num = obj_num | plus: 1 -%}
+      {%- assign m = art.metaDescription -%}
+      {%- assign slug = m.name | slugify -%}
+  ,{
+    "type": "object",
+    "number": {{ obj_num }},
+    "title": {{ m.name | jsonify }},
+    "accNo": {{ m.accNo | jsonify }},
+    "material": {{ m.material | jsonify }},
+    "shelf": {{ shelf.title | jsonify }},
+    "url": {{ shelf_url | append: '#art-' | append: slug | jsonify }},
+    "snippet": {{ m.details | jsonify }}
+  }
+    {%- endfor -%}
+  {%- endfor -%}
+]

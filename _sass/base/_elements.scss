@@ -1,0 +1,230 @@
+// Base HTML element typography, focus rings (WCAG 2.4.7 & 2.4.13), and reflow safety (1.4.10).
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  scroll-padding-top: var(--header-clearance);
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
+  word-spacing: var(--word-spacing);
+  overflow-wrap: anywhere;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+main {
+  flex: 1 0 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  color: var(--text);
+  line-height: 1.25;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+h1 {
+  font-size: clamp(1.35rem, 3.6vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: max(-0.015em, var(--letter-spacing));
+}
+
+h2 {
+  font-size: clamp(1.375rem, 2.5vw, 2rem);
+  font-weight: 700;
+}
+
+h3 {
+  font-size: clamp(1.125rem, 1.8vw, 1.375rem);
+  font-weight: 600;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: var(--paragraph-gap);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--accent-hover);
+  text-decoration-thickness: 0.15em;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img,
+picture,
+video,
+svg {
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+  display: block;
+}
+
+img.has-lqip {
+  background-image: var(--lqip);
+  background-size: cover;
+  background-position: center;
+}
+
+figure {
+  margin: 0;
+}
+
+figcaption {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+kbd {
+  display: inline-block;
+  padding: 0.125em 0.45em;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.2;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+// High-visibility WCAG 2.4.13 focus appearance (>= 3px outline with contrasting halo)
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--focus-halo);
+}
+
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+[tabindex="-1"]:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+// Native modal <dialog> baseline
+dialog {
+  color: var(--text);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  max-width: min(44rem, calc(100vw - 1.5rem));
+  max-height: calc(100vh - 2rem);
+  padding: 0;
+}
+
+dialog::backdrop {
+  background: rgba(15, 12, 10, 0.78);
+}
+
+// Details/summary accessible transcripts
+details {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  padding: 0.75rem 1rem;
+}
+
+details > summary {
+  cursor: pointer;
+  font-weight: 600;
+  min-height: var(--target-min);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  list-style: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+details > summary::before {
+  content: "";
+  width: 0.6em;
+  height: 0.6em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  flex-shrink: 0;
+  transition: transform 150ms ease;
+}
+
+details[open] > summary::before {
+  transform: rotate(45deg);
+}
+
+details[open] > summary {
+  margin-bottom: 0.75rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
+  }
+}

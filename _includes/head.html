@@ -1,12 +1,47 @@
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {%- seo -%}
-  <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
-  <link rel="icon" href="{{ "/assets/favicon.svg" | relative_url }}" type="image/svg+xml">
-  {%- feed_meta -%}
-  {%- if jekyll.environment == 'production' and site.google_analytics -%}
-    {%- include google-analytics.html -%}
+  <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="preload" href="{{ '/assets/fonts/lexend/lexend-latin-wght-normal.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  <script>
+    (function () {
+      try {
+        var raw = localStorage.getItem('ghm_a11y_prefs');
+        if (!raw) return;
+        var p = JSON.parse(raw);
+        var root = document.documentElement;
+        if (p && typeof p.size === 'number' && p.size >= 80 && p.size <= 200) {
+          root.style.fontSize = p.size + '%';
+          root.dataset.textSize = String(p.size);
+        }
+        if (p && (p.spacing === 'default' || p.spacing === 'relaxed' || p.spacing === 'wide')) {
+          root.dataset.spacing = p.spacing;
+        }
+        if (p && (p.font === 'lexend' || p.font === 'atkinson' || p.font === 'opendyslexic' || p.font === 'gentium')) {
+          root.dataset.font = p.font;
+        }
+        if (p && (p.theme === 'light' || p.theme === 'dark' || p.theme === 'high-contrast')) {
+          root.dataset.theme = p.theme;
+        }
+        if (p && p.keyboardGuide === true) {
+          root.dataset.keyboardGuide = 'on';
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  <script type="module" src="{{ '/assets/js/a11y-prefs.js' | relative_url }}"></script>
+  <script type="module" src="{{ '/assets/js/site.js' | relative_url }}"></script>
+  <script type="module" src="{{ '/assets/js/search.js' | relative_url }}"></script>
+  <script type="module" src="{{ '/assets/js/kiosk.js' | relative_url }}"></script>
+  {%- if page.layout == 'home' -%}
+  <script type="module" src="{{ '/assets/js/home-showcase.js' | relative_url }}"></script>
+  {%- endif -%}
+  {%- if page.layout == 'shelf' -%}
+  <script type="module" src="{{ '/assets/js/shelf.js' | relative_url }}"></script>
+  {%- endif -%}
+  {%- if jekyll.environment == 'production' and site.analytics.enabled -%}
+  <script async defer src="https://nocookieanalytics.com/latest.js"></script>
   {%- endif -%}
 </head>

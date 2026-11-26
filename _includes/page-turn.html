@@ -1,0 +1,14 @@
+<nav class="page-turn" aria-label="Page navigation">
+  {%- if include.prev_url -%}
+  <a class="page-turn__link page-turn__link--prev" href="{{ include.prev_url | relative_url }}" data-kg-keys="Tab > Enter" data-kg-label="Previous page">
+    <span class="page-turn__dir">← Previous</span>
+    <span class="page-turn__title">{{ include.prev_label | escape }}</span>
+  </a>
+  {%- endif -%}
+  {%- if include.next_url -%}
+  <a class="page-turn__link page-turn__link--next" href="{{ include.next_url | relative_url }}" data-kg-keys="Tab > Enter" data-kg-label="Next page">
+    <span class="page-turn__dir">Next →</span>
+    <span class="page-turn__title">{{ include.next_label | escape }}</span>
+  </a>
+  {%- endif -%}
+</nav>

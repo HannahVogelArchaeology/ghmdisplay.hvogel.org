@@ -1,0 +1,104 @@
+// Global institutional 3-column footer + Country & funding acknowledgement + legal/CRICOS bar.
+
+.site-footer {
+  margin-top: 4rem;
+  background: var(--surface);
+  border-top: 2px solid var(--border);
+  padding-block: 2.5rem 2rem;
+  color: var(--text);
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.footer-col {
+  min-width: 0;
+}
+
+.footer-col p {
+  font-size: 0.9375rem;
+  margin-bottom: 0.75rem;
+}
+
+.footer-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  padding-block: 0.25rem;
+  font-size: 0.9375rem;
+}
+
+.footer-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.footer-social__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: var(--target-min);
+  min-width: var(--target-min);
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.footer-social__link:hover {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-color: var(--accent);
+}
+
+.footer-acknowledgements {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.footer-acknowledgements p {
+  font-size: 0.9375rem;
+  max-width: 65ch;
+}
+
+.footer-legal {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-cricos {
+  font-weight: 600;
+  color: var(--text);
+}

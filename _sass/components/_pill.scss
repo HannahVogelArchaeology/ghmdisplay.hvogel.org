@@ -1,0 +1,20 @@
+// Shared pill & badge primitives used across header, shelf counters, and tags.
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.pill--accent {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-color: var(--accent);
+}

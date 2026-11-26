@@ -1,7 +1,11 @@
+const fs = require('node:fs');
 const { defineConfig, devices } = require('@playwright/test');
 
 const port = Number(process.env.PLAYWRIGHT_PORT || 4173);
 const baseURL = process.env.BASE_URL || `http://127.0.0.1:${port}/`;
+const localChrome = !process.env.CI
+  ? (process.env.CHROME || (fs.existsSync('/usr/bin/google-chrome') ? '/usr/bin/google-chrome' : undefined))
+  : undefined;
 
 module.exports = defineConfig({
   testDir: './e2e',
@@ -12,6 +16,7 @@ module.exports = defineConfig({
     baseURL,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
+    launchOptions: localChrome ? { executablePath: localChrome, args: ['--no-sandbox'] } : undefined,
   },
   webServer: process.env.BASE_URL
     ? undefined

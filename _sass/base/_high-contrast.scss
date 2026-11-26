@@ -1,0 +1,85 @@
+// High Contrast theme structural enhancements & Windows Forced Colors (forced-colors: active).
+// Zero !important declarations.
+
+:root[data-theme="high-contrast"] {
+  .site-header,
+  .site-header__inner,
+  .a11y-panel,
+  .search-dialog,
+  .site-footer,
+  .btn,
+  .artifact-card,
+  .shelf-showcase,
+  details {
+    border: 2px solid var(--border);
+    box-shadow: none;
+  }
+
+  img.has-lqip,
+  img {
+    background-image: none;
+  }
+
+  a {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+
+  [aria-current="page"],
+  [aria-pressed="true"] {
+    border: 2px solid var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+
+  :focus-visible,
+  [aria-current="page"]:focus-visible,
+  [aria-pressed="true"]:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 2px var(--border);
+  }
+}
+
+@media (forced-colors: active) {
+  .site-header,
+  .site-header__inner,
+  .a11y-panel,
+  .search-dialog,
+  .steps__button,
+  .btn,
+  .artifact-card,
+  details,
+  dialog {
+    border: 2px solid CanvasText;
+    box-shadow: none;
+  }
+
+  input[type="range"] {
+    appearance: auto;
+    forced-color-adjust: auto;
+  }
+
+  a[aria-current="page"] {
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    border: 2px solid Highlight;
+  }
+
+  button[aria-pressed="true"] {
+    border: 2px solid Highlight;
+  }
+
+  :focus-visible,
+  a[aria-current="page"]:focus-visible,
+  button[aria-pressed="true"]:focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+
+  img.has-lqip,
+  img {
+    background-image: none;
+  }
+}

@@ -1,0 +1,30 @@
+---
+---
+@use "tokens";
+@use "base/fonts";
+@use "base/elements";
+@use "base/utilities";
+
+@use "layout/header";
+@use "layout/footer";
+@use "layout/page";
+
+@use "components/pill";
+@use "components/a11y-panel";
+@use "components/search-dialog";
+@use "components/section-steps";
+@use "components/page-turn";
+@use "components/keyboard-guide";
+
+// Wave 3 disjoint partials (pre-wired here so parallel Wave 3 branches never edit main.scss)
+@use "pages/home";
+@use "pages/shelf";
+@use "pages/curation";
+@use "pages/accessibility";
+@use "components/artifact-card";
+@use "components/photo-viewer";
+@use "components/model-dialog";
+@use "components/audio-player";
+@use "components/kiosk";
+
+@use "base/high-contrast";

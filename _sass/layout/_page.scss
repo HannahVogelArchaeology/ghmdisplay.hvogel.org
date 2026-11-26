@@ -1,0 +1,75 @@
+// Standard page layout (Curation, Accessibility, 404, generic prose pages).
+
+.page-shell {
+  padding-block: clamp(1.75rem, 4vw, 3rem) 2rem;
+}
+
+.page-header {
+  max-width: var(--prose-max);
+  margin-bottom: 2rem;
+}
+
+.page-header__lead {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+}
+
+.page-content {
+  max-width: var(--prose-max);
+}
+
+.page-content h2 {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.page-content h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.page-content h3 {
+  margin-top: 1.75rem;
+}
+
+.page-content ul,
+.page-content ol {
+  padding-left: 1.4rem;
+  margin-bottom: var(--paragraph-gap);
+}
+
+.page-content li {
+  margin-bottom: 0.45rem;
+}
+
+.page-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-block: 1.25rem 2rem;
+  font-size: 0.9375rem;
+}
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card);
+}
+
+.page-content th,
+.page-content td {
+  text-align: left;
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+}
+
+.page-content thead th {
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  border-bottom: 2px solid var(--border);
+}

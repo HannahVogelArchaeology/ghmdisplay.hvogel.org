@@ -1,0 +1,98 @@
+<section id="a11y-panel"
+         class="a11y-panel"
+         aria-labelledby="a11y-panel-title"
+         hidden>
+  <div class="a11y-panel__head">
+    <h2 id="a11y-panel-title" class="a11y-panel__title">Display &amp; Accessibility</h2>
+    <button id="a11y-close"
+            class="a11y-panel__close"
+            type="button"
+            aria-label="Close display and accessibility settings">
+      {%- include icon.html name="x" class="icon" size=18 -%}
+      <span>Close</span>
+    </button>
+  </div>
+
+  <p id="a11y-status" class="visually-hidden" role="status" aria-live="polite"></p>
+
+  <fieldset class="a11y-group">
+    <legend class="a11y-group__label">
+      <span>Text size</span>
+      <output id="a11y-size-output" class="a11y-group__value">100%</output>
+    </legend>
+    <div class="a11y-size-row">
+      <button type="button" class="a11y-choice" data-a11y-size="down" aria-label="A− Decrease text size">A−</button>
+      <button type="button" class="a11y-choice" data-a11y-size="reset">Reset</button>
+      <button type="button" class="a11y-choice" data-a11y-size="up" aria-label="A+ Increase text size">A+</button>
+    </div>
+  </fieldset>
+
+  <fieldset class="a11y-group">
+    <legend class="a11y-group__label">
+      <span>Text spacing</span>
+      <span class="a11y-group__value">Anti-crowding</span>
+    </legend>
+    <div class="a11y-segment" role="group" aria-label="Text spacing options">
+      <button type="button" class="a11y-choice" data-a11y-spacing="default" aria-pressed="true">Default</button>
+      <button type="button" class="a11y-choice" data-a11y-spacing="relaxed" aria-pressed="false">Relaxed</button>
+      <button type="button" class="a11y-choice" data-a11y-spacing="wide" aria-pressed="false">Wide</button>
+    </div>
+  </fieldset>
+
+  <fieldset class="a11y-group">
+    <legend class="a11y-group__label">
+      <span>Reading font</span>
+    </legend>
+    <div class="a11y-segment a11y-segment--fonts" role="group" aria-label="Reading font options">
+      <button type="button" class="a11y-choice" data-a11y-font="lexend" aria-pressed="true">Lexend</button>
+      <button type="button" class="a11y-choice" data-a11y-font="atkinson" aria-pressed="false">Atkinson Hyperlegible</button>
+      <button type="button" class="a11y-choice" data-a11y-font="opendyslexic" aria-pressed="false">OpenDyslexic</button>
+      <button type="button" class="a11y-choice" data-a11y-font="gentium" aria-pressed="false">Gentium</button>
+    </div>
+  </fieldset>
+
+  <fieldset class="a11y-group">
+    <legend class="a11y-group__label">
+      <span>Display theme</span>
+    </legend>
+    <div class="a11y-segment" role="group" aria-label="Display theme options">
+      <button type="button" class="a11y-choice" data-a11y-theme="auto" aria-pressed="true">Auto</button>
+      <button type="button" class="a11y-choice" data-a11y-theme="light" aria-pressed="false">
+        {%- include icon.html name="sun" class="icon" size=16 -%}
+        <span>Light</span>
+      </button>
+      <button type="button" class="a11y-choice" data-a11y-theme="dark" aria-pressed="false">
+        {%- include icon.html name="moon" class="icon" size=16 -%}
+        <span>Dark</span>
+      </button>
+      <button type="button" class="a11y-choice" data-a11y-theme="high-contrast" aria-pressed="false">
+        {%- include icon.html name="contrast" class="icon" size=16 -%}
+        <span>High Contrast</span>
+      </button>
+    </div>
+  </fieldset>
+
+  <div class="a11y-group">
+    <button id="a11y-keyboard-guide"
+            type="button"
+            class="a11y-choice a11y-toggle-btn"
+            aria-pressed="false">
+      <span>
+        {%- include icon.html name="keyboard" class="icon" size=18 -%}
+        Keyboard Guide
+      </span>
+      <span class="a11y-kg-state">Off</span>
+    </button>
+  </div>
+
+  <div class="a11y-panel__footer">
+    <button id="a11y-reset-all"
+            type="button"
+            class="btn a11y-panel__reset"
+            aria-disabled="true">
+      {%- include icon.html name="rotate-ccw" class="icon" size=18 -%}
+      <span>Reset all display settings</span>
+    </button>
+    <a class="a11y-panel__link" href="{{ '/accessibility/' | relative_url }}">Read our Accessibility page →</a>
+  </div>
+</section>

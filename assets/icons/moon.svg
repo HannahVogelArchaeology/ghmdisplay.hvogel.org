@@ -1,15 +1,5 @@
-<!-- @license lucide-static v0.469.0 - ISC -->
-<svg
-  class="lucide lucide-moon"
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <!-- Icon "moon" (see NOTICE.md). Symbol used via _includes/icon.html. -->
+  <symbol id="icon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></symbol>
+  <use href="#icon" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

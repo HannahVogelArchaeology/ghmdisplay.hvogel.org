@@ -1,0 +1,50 @@
+// Previous / Next page-turn navigation at the bottom of shelf and content pages.
+
+.page-turn {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--border-subtle);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.page-turn__link {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--target-min);
+  min-width: 11rem;
+  padding: 0.75rem 1.15rem;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  text-decoration: none;
+  gap: 0.2rem;
+}
+
+.page-turn__link:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
+.page-turn__dir {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.page-turn__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.page-turn__link--next {
+  margin-left: auto;
+  text-align: right;
+}

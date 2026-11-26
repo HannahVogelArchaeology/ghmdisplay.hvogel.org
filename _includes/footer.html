@@ -1,10 +1,56 @@
-<footer class="site-footer h-card">
-  <data class="u-url" href="{{ "/" | relative_url }}"></data>
+<footer class="site-footer" role="contentinfo">
   <div class="wrapper">
-    <p class="p-name"><strong>{{ site.title | escape }}</strong></p>
-    <p>
-      Archaeology exhibition project ·
-      <a href="https://github.com/{{ site.repository }}">GitHub repository</a>
-    </p>
+    <div class="footer-columns">
+      <section class="footer-col" aria-labelledby="footer-about">
+        <h2 class="footer-heading" id="footer-about">{{ site.title | escape }}</h2>
+        <p>Curated by Hannah Vogel. An exhibition at the <a href="https://www.mq.edu.au/faculty-of-arts/about/gale-history-museum">Gale History Museum</a>, Macquarie University.</p>
+        <div class="footer-social" role="group" aria-label="Curator social profiles">
+          <a class="footer-social__link" href="https://www.linkedin.com/in/hannah-vogel-216039149/" rel="noopener">
+            {%- include icon.html name="linkedin" class="icon" size=18 -%}
+            <span>LinkedIn</span>
+          </a>
+          <a class="footer-social__link" href="https://www.instagram.com/hannah_the_archaeologist/" rel="noopener">
+            {%- include icon.html name="instagram" class="icon" size=18 -%}
+            <span>Instagram</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="footer-col" aria-labelledby="footer-visit">
+        <h2 class="footer-heading" id="footer-visit">Visit</h2>
+        <p>
+          Gale History Museum<br>
+          Ground floor, Arts Precinct, 25C Wally's Walk<br>
+          Macquarie University, North Ryde<br>
+          10 November 2026 to 11 March 2027<br>
+          10am to 4pm, Monday to Friday (closed on public holidays)
+        </p>
+      </section>
+
+      <nav class="footer-col" aria-labelledby="footer-more">
+        <h2 class="footer-heading" id="footer-more">More</h2>
+        <ul class="footer-links">
+          <li><a href="{{ '/accessibility/' | relative_url }}">Accessibility</a></li>
+          <li><a href="{{ '/curation/' | relative_url }}">Curation &amp; Acknowledgements</a></li>
+          <li><a href="{{ '/curation/#licenses-heading' | relative_url }}">Licences</a></li>
+          <li><a href="https://github.com/{{ site.repository }}">Source code on GitHub</a></li>
+          <li><a href="https://policies.mq.edu.au/document/view.php?id=107">Privacy Policy</a></li>
+          <li><a href="https://policies.mq.edu.au/document/view.php?id=234&version=4">Acceptable Use Policy</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <section class="footer-acknowledgements" aria-labelledby="footer-ack-heading">
+      <h2 class="footer-heading" id="footer-ack-heading">Acknowledgements</h2>
+      <p>This research was undertaken on the lands of the Wallumattagal people of the Dharug Nation, whose cultures and customs have nurtured and continue to nurture this land, since the Dreaming. Their sovereignty was never ceded.</p>
+      <p>This project is supported by the Commonwealth through an Australian Government Research Training Program Scholarship (<a href="https://doi.org/10.82133/C42F-K220">DOI: https://doi.org/10.82133/C42F-K220</a>) and the <a href="https://www.ndrp.org.au/">National Disability Research Partnership</a> Disability Leadership Program.</p>
+    </section>
+
+    <div class="footer-legal">
+      <p>
+        © 2026 Hannah Vogel and Gale History Museum. All rights reserved for exhibition text, photographs, audio, and video. Website code under the <a href="https://github.com/{{ site.repository }}/blob/main/LICENSE">MIT License</a>.
+      </p>
+      <p class="footer-cricos">CRICOS Provider 00002J | ABN 90 952 801 237 | TEQSA Provider PRV12032</p>
+    </div>
   </div>
 </footer>

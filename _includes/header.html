@@ -1,32 +1,53 @@
 <header class="site-header" role="banner">
+  <div class="site-header__inner">
+    <nav class="site-nav" aria-label="Primary" data-kg-keys="Tab > Enter" data-kg-label="Navigate pages" data-kg-place="below">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-kg-keys="Tab > Enter/Space" data-kg-label="Open menu">
+        {%- include icon.html name="menu" class="icon icon-menu" size=20 -%}
+        {%- include icon.html name="x" class="icon icon-close" size=20 -%}
+        <span>Menu</span>
+      </button>
+      <ul class="site-nav__list" id="nav-links">
+        {%- assign nav_items = "Home:/|Top Shelf:/shelves/top/|Middle Shelf:/shelves/middle/|Bottom Shelf:/shelves/bottom/|Curation:/curation/" | split: "|" -%}
+        {%- for item in nav_items -%}
+        {%- assign parts = item | split: ":" -%}
+        {%- assign label = parts[0] -%}
+        {%- assign href = parts[1] -%}
+        <li>
+          <a class="site-nav__link"
+             href="{{ href | relative_url }}"
+             {% if page.url == href or (href == '/' and page.url == '/index.html') %}aria-current="page"{% endif %}>{{ label }}</a>
+        </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
 
-  <div class="wrapper">
-    {%- assign default_paths = site.pages | map: "path" -%}
-    {%- assign page_paths = site.header_pages | default: default_paths -%}
-    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+    <p class="site-brand" aria-hidden="true">{{ site.title | split: ":" | first }}</p>
 
-    {%- if page_paths -%}
-      <nav class="site-nav" aria-label="Primary">
-        <div class="desktop-nav">
-          {%- for path in page_paths -%}
-            {%- assign my_page = site.pages | where: "path", path | first -%}
-            {%- if my_page.title -%}
-            <a class="page-link" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-        <details class="mobile-nav">
-          <summary>Menu</summary>
-          <div class="mobile-nav-links">
-            {%- for path in page_paths -%}
-              {%- assign my_page = site.pages | where: "path", path | first -%}
-              {%- if my_page.title -%}
-              <a class="page-link" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        </details>
-      </nav>
-    {%- endif -%}
+    <div class="header-tools" role="group" aria-label="Search and Accessibility tools">
+      <button id="search-trigger"
+              class="header-tool-btn"
+              type="button"
+              aria-haspopup="dialog"
+              aria-controls="search-dialog"
+              aria-label="Search exhibition (Ctrl+K or /)"
+              aria-keyshortcuts="Control+K Meta+K /"
+              data-kg-keys="Ctrl+K / /"
+              data-kg-label="Search exhibition">
+        {%- include icon.html name="search" class="icon" size=20 -%}
+        <span class="header-tool-btn__label">Search</span>
+      </button>
+
+      <button id="a11y-trigger"
+              class="header-tool-btn"
+              type="button"
+              aria-expanded="false"
+              aria-controls="a11y-panel"
+              aria-label="Accessibility"
+              data-kg-keys="Tab > Enter/Space"
+              data-kg-label="Display & accessibility settings">
+        {%- include icon.html name="accessibility" class="icon" size=20 -%}
+        <span class="header-tool-btn__label">Accessibility</span>
+      </button>
+    </div>
   </div>
 </header>
