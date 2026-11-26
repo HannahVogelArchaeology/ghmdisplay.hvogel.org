@@ -1,0 +1,254 @@
+{%- assign art = include.artifact -%}
+{%- assign m = art.metaDescription -%}
+{%- assign slug = m.name | slugify -%}
+{%- assign num = include.number -%}
+{%- assign first_img = art.images | first -%}
+{%- assign has_audio = false -%}
+{%- if art.audioDescription and art.audioDescription.url and art.audioDescription.url != "TBC" -%}
+  {%- assign has_audio = true -%}
+{%- endif -%}
+{%- assign has_transcript = false -%}
+{%- if art.audioDescription and art.audioDescription.transcript and art.audioDescription.transcript != "TBC" -%}
+  {%- assign has_transcript = true -%}
+{%- endif -%}
+
+{%- assign dim_parts = "" -%}
+{%- assign dim_labels = "H,W,D" | split: "," -%}
+{%- for d in m.dimension -%}
+  {%- if d and d > 0 -%}
+    {%- assign piece = dim_labels[forloop.index0] | append: ": " | append: d | append: " mm" -%}
+    {%- if dim_parts == "" -%}
+      {%- assign dim_parts = piece -%}
+    {%- else -%}
+      {%- assign dim_parts = dim_parts | append: ", " | append: piece -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<article class="artifact-card"
+         id="art-{{ slug }}"
+         aria-labelledby="art-heading-{{ slug }}"
+         data-step>
+  <div class="artifact-card__media"
+       data-gallery
+       data-gallery-title="{{ num }}. {{ m.name | escape }}">
+    <figure class="artifact-gallery__figure">
+      <div class="artifact-gallery__stage">
+        {% include responsive-image.html src=first_img.url alt=first_img.altText class="artifact-gallery__image" sizes="(max-width: 899px) 100vw, 480px" eager=include.first full=true %}
+      </div>
+
+      <div class="artifact-gallery__controls" role="group" aria-label="Photograph controls for {{ num }}. {{ m.name | escape }}">
+        {%- if art.images.size > 1 -%}
+        <button type="button"
+                class="btn artifact-gallery__nav"
+                data-gallery-prev
+                aria-label="Previous photograph of {{ num }}. {{ m.name | escape }}"
+                data-kg-keys="Tab > Enter/Space"
+                data-kg-label="Previous photo">
+          {%- include icon.html name="chevron-left" class="icon" size=18 -%}
+          <span>Previous</span>
+        </button>
+        {%- endif -%}
+
+        <p class="artifact-gallery__status" role="status" aria-live="polite" data-gallery-status>Photo 1 of {{ art.images.size }}</p>
+
+        {%- if art.images.size > 1 -%}
+        <button type="button"
+                class="btn artifact-gallery__nav"
+                data-gallery-next
+                aria-label="Next photograph of {{ num }}. {{ m.name | escape }}"
+                data-kg-keys="Tab > Enter/Space"
+                data-kg-label="Next photo">
+          <span>Next</span>
+          {%- include icon.html name="chevron-right" class="icon" size=18 -%}
+        </button>
+        {%- endif -%}
+
+        <button type="button"
+                class="btn artifact-gallery__enlarge"
+                data-gallery-enlarge
+                aria-haspopup="dialog"
+                aria-controls="photo-dialog"
+                aria-label="Enlarge photograph of {{ num }}. {{ m.name | escape }}"
+                data-kg-keys="Tab > Enter/Space"
+                data-kg-label="Enlarge photo">
+          {%- include icon.html name="maximize-2" class="icon" size=18 -%}
+          <span>Enlarge</span>
+        </button>
+      </div>
+
+      <figcaption class="artifact-gallery__caption" data-gallery-caption>{{ first_img.caption | escape }}</figcaption>
+    </figure>
+
+    {%- if art.images.size > 1 -%}
+    <div class="artifact-gallery__thumbs"
+         role="group"
+         aria-label="Photo thumbnails for {{ num }}. {{ m.name | escape }}"
+         data-kg-keys="Tab > Enter/Space"
+         data-kg-label="Select photo view">
+      {%- for img in art.images -%}
+      <button type="button"
+              class="artifact-thumb{% if forloop.first %} is-active{% endif %}"
+              data-gallery-thumb
+              data-index="{{ forloop.index0 }}"
+              data-caption="{{ img.caption | escape }}"
+              data-full="{{ img.url | relative_url | replace: ' ', '%20' }}"
+              aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
+        {% include responsive-image.html src=img.url alt=img.altText class="artifact-thumb__img" sizes="96px" full=true %}
+      </button>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+  </div>
+
+  <div class="artifact-card__content">
+    <p class="pill artifact-card__accession" aria-hidden="true">{{ m.accNo | escape }}</p>
+
+    <h2 id="art-heading-{{ slug }}" class="artifact-card__heading" tabindex="-1">
+      <span class="visually-hidden">Object number {{ num }}, </span><span class="artifact-card__num" aria-hidden="true">{{ num }}. </span>{{ m.name | escape }}
+    </h2>
+
+    <dl class="artifact-meta" id="meta-{{ slug }}">
+      <div class="artifact-meta__row">
+        <dt>Accession number</dt>
+        <dd>{{ m.accNo | escape }}</dd>
+      </div>
+      <div class="artifact-meta__row">
+        <dt>Material</dt>
+        <dd>{{ m.material | escape }}</dd>
+      </div>
+      {%- if dim_parts != "" -%}
+      <div class="artifact-meta__row">
+        <dt>Dimensions</dt>
+        <dd>{{ dim_parts | escape }}</dd>
+      </div>
+      {%- endif -%}
+      <div class="artifact-meta__row">
+        <dt>Details</dt>
+        <dd>{{ m.details | escape }}</dd>
+      </div>
+    </dl>
+
+    {%- if has_audio -%}
+    <div class="audio-player" data-audio-player data-object-label="{{ num }}. {{ m.name | escape }}">
+      <p class="audio-player__heading" id="audio-heading-{{ slug }}">Audio description</p>
+      <audio class="audio-player__native"
+             controls
+             preload="none"
+             src="{{ art.audioDescription.url | relative_url | replace: ' ', '%20' }}"
+             aria-labelledby="audio-heading-{{ slug }}"></audio>
+
+      <div class="audio-player__bar" role="group" aria-labelledby="audio-heading-{{ slug }}" hidden data-audio-bar>
+        <div class="audio-player__transport">
+          <button type="button"
+                  class="btn btn--primary audio-player__play"
+                  data-audio-play
+                  aria-pressed="false"
+                  aria-label="Play audio description for {{ num }}. {{ m.name | escape }}"
+                  data-kg-keys="Tab > Enter/Space"
+                  data-kg-label="Play or pause audio">
+            {%- include icon.html name="play" class="icon audio-player__icon-play" size=18 -%}
+            {%- include icon.html name="pause" class="icon audio-player__icon-pause" size=18 -%}
+            <span data-audio-play-text>Play</span>
+          </button>
+
+          <button type="button"
+                  class="btn audio-player__skip"
+                  data-audio-skip="-10"
+                  aria-label="−10s rewind audio description for {{ num }}. {{ m.name | escape }}"
+                  data-kg-keys="Tab > Enter/Space"
+                  data-kg-label="Rewind 10 seconds">
+            {%- include icon.html name="rotate-ccw" class="icon" size=16 -%}
+            <span>−10s</span>
+          </button>
+
+          <button type="button"
+                  class="btn audio-player__skip"
+                  data-audio-skip="10"
+                  aria-label="+10s forward audio description for {{ num }}. {{ m.name | escape }}"
+                  data-kg-keys="Tab > Enter/Space"
+                  data-kg-label="Forward 10 seconds">
+            <span>+10s</span>
+            {%- include icon.html name="rotate-cw" class="icon" size=16 -%}
+          </button>
+        </div>
+
+        <div class="audio-player__scrub">
+          <input type="range"
+                 class="audio-player__seek"
+                 min="0"
+                 max="100"
+                 step="0.5"
+                 value="0"
+                 aria-label="Audio position for {{ num }}. {{ m.name | escape }}"
+                 aria-valuetext="0:00 of 0:00"
+                 data-audio-seek>
+          <span class="audio-player__time" aria-hidden="true" data-audio-time>0:00 / 0:00</span>
+        </div>
+
+        <div class="audio-player__extras">
+          <button type="button"
+                  class="btn audio-player__mute"
+                  data-audio-mute
+                  aria-pressed="false"
+                  aria-label="Mute audio description for {{ num }}. {{ m.name | escape }}">
+            {%- include icon.html name="volume-2" class="icon audio-player__icon-vol" size=18 -%}
+            {%- include icon.html name="volume-x" class="icon audio-player__icon-muted" size=18 -%}
+            <span data-audio-mute-text>Mute</span>
+          </button>
+
+          <label class="audio-player__vol-wrap">
+            <span class="visually-hidden">Volume for {{ num }}. {{ m.name | escape }}</span>
+            <input type="range"
+                   class="audio-player__volume"
+                   min="0"
+                   max="1"
+                   step="0.05"
+                   value="1"
+                   aria-label="Volume for {{ num }}. {{ m.name | escape }}"
+                   aria-valuetext="100%"
+                   data-audio-volume>
+          </label>
+
+          <label class="audio-player__speed-wrap">
+            <span class="audio-player__speed-label">Speed<span class="visually-hidden"> for {{ num }}. {{ m.name | escape }}</span></span>
+            <select class="audio-player__speed" data-audio-speed>
+              <option value="0.75">0.75×</option>
+              <option value="1" selected>1×</option>
+              <option value="1.25">1.25×</option>
+              <option value="1.5">1.5×</option>
+              <option value="2">2×</option>
+            </select>
+          </label>
+        </div>
+
+        <p class="visually-hidden" role="status" aria-live="polite" data-audio-status></p>
+      </div>
+    </div>
+    {%- endif -%}
+
+    {%- if art.obj3D and art.obj3D.url -%}
+    <div class="artifact-card__actions">
+      <button type="button"
+              class="btn btn--3d"
+              data-3d-src="{{ art.obj3D.url | escape }}"
+              data-3d-title="3D model: {{ num }}. {{ m.name | escape }}"
+              aria-haspopup="dialog"
+              aria-controls="model-dialog"
+              aria-label="View in 3D: {{ num }}. {{ m.name | escape }}"
+              data-kg-keys="Tab > Enter/Space"
+              data-kg-label="Open 3D model">
+        {%- include icon.html name="rotate-3d" class="icon" size=20 -%}
+        <span>View in 3D</span>
+      </button>
+    </div>
+    {%- endif -%}
+
+    {%- if has_transcript -%}
+    <details class="artifact-transcript" id="transcript-{{ slug }}">
+      <summary data-kg-keys="Tab > Enter/Space" data-kg-label="Toggle transcript">Audio description transcript</summary>
+      <p>{{ art.audioDescription.transcript | escape }}</p>
+    </details>
+    {%- endif -%}
+  </div>
+</article>

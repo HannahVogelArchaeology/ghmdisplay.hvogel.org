@@ -1,1 +1,113 @@
-// Wave 3 disjoint partial stub.
+// Shared Nira 3D model viewer (<dialog id="model-dialog">).
+
+.model-dialog {
+  width: min(94vw, 76rem);
+  height: min(88vh, 52rem);
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  background: var(--card);
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.model-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 700px) {
+  .model-dialog {
+    width: 100vw;
+    height: 100dvh;
+    margin: 0;
+    border-radius: 0;
+    border: 0;
+  }
+}
+
+.model-dialog__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  background: var(--surface);
+  border-bottom: 2px solid var(--border-subtle);
+}
+
+.model-dialog__title {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--text);
+}
+
+.model-dialog__stage {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0;
+  background: var(--bg);
+}
+
+.model-dialog__frame {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.model-dialog__status {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  max-width: 44ch;
+  margin-inline: auto;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.model-dialog__status:empty {
+  display: none;
+}
+
+.model-dialog__status:not(:empty) + .model-dialog__frame {
+  visibility: hidden;
+}
+
+.model-dialog__status::before {
+  content: "";
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 4px solid var(--border-subtle);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: model-dialog-spin 0.9s linear infinite;
+}
+
+@keyframes model-dialog-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .model-dialog__status::before {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .model-dialog {
+    border: 2px solid CanvasText;
+  }
+}
