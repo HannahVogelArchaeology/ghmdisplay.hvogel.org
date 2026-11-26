@@ -1,1 +1,455 @@
-// Wave 3 disjoint partial stub.
+// Home page layout: hero, About the Exhibition + Video Introduction,
+// centered Auslan Introduction, and Explore the Exhibition shelf showcases
+// with 100% opaque scroll-rising panels and automatic static accessibility fallbacks.
+// Zero !important declarations.
+
+.home {
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+// ---------------------------------------------------------------------------
+// 1. Hero
+// ---------------------------------------------------------------------------
+.home-hero {
+  padding-block: clamp(1.75rem, 4.5vw, 3.5rem) clamp(2rem, 5vw, 3.75rem);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.home-hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .home-hero__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  }
+}
+
+.home-hero__text {
+  min-width: 0;
+}
+
+.home-hero__title {
+  margin-bottom: 1rem;
+}
+
+.home-hero__facts {
+  margin-bottom: 1rem;
+}
+
+.home-hero__visit {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.home-hero__visit a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  font-weight: 600;
+  padding-block: 0.25rem;
+}
+
+.home-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.home-hero__cta {
+  text-align: center;
+}
+
+.home-hero__figure {
+  min-width: 0;
+}
+
+.home-hero__media {
+  background-color: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--shadow-md);
+}
+
+.home-hero__image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(72vh, 42rem);
+  object-fit: contain;
+}
+
+.home-hero__caption {
+  margin-top: 0.75rem;
+}
+
+// ---------------------------------------------------------------------------
+// Shared home sections
+// ---------------------------------------------------------------------------
+.home-section {
+  padding-block: clamp(2.25rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.home-section:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.home-section__title {
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+
+// ---------------------------------------------------------------------------
+// 2. About the Exhibition + Video Introduction
+// ---------------------------------------------------------------------------
+.home-about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.75rem, 4vw, 3rem);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .home-about__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.home-about__prose {
+  min-width: 0;
+  max-width: var(--prose-max);
+  font-size: 1.05rem;
+}
+
+.home-about__media {
+  min-width: 0;
+}
+
+.video-card__heading {
+  margin-bottom: 0.75rem;
+}
+
+.video-card {
+  min-width: 0;
+}
+
+.video-card__frame {
+  background-color: var(--overlay-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.video-card__player {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background-color: var(--overlay-bg);
+}
+
+.video-card__caption {
+  margin-top: 0.65rem;
+}
+
+.video-transcript {
+  margin-top: 1rem;
+}
+
+.video-transcript__body {
+  padding-top: 0.25rem;
+}
+
+.video-transcript__body ul {
+  padding-left: 1.4rem;
+  margin-bottom: var(--paragraph-gap);
+}
+
+.video-transcript__body li {
+  margin-bottom: 0.4rem;
+}
+
+// ---------------------------------------------------------------------------
+// 3. Auslan Introduction (centered full-width showcase)
+// ---------------------------------------------------------------------------
+.home-auslan {
+  background-color: var(--surface);
+}
+
+.home-auslan__inner {
+  max-width: 54rem;
+  margin-inline: auto;
+}
+
+.home-auslan__title {
+  text-align: center;
+}
+
+.auslan-card__placeholder {
+  background-color: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.auslan-card__icon {
+  color: var(--accent);
+}
+
+.auslan-card__status-title {
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0;
+}
+
+.auslan-card__status-body {
+  max-width: var(--prose-max);
+  color: var(--text-muted);
+  margin-bottom: 0;
+}
+
+.auslan-card__caption {
+  text-align: center;
+}
+
+.auslan-transcript {
+  max-width: 54rem;
+  margin-inline: auto;
+}
+
+// ---------------------------------------------------------------------------
+// 4. Explore the Exhibition (Shelf Showcases)
+// ---------------------------------------------------------------------------
+.shelf-showcase-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.shelf-showcase {
+  min-width: 0;
+  border-radius: var(--radius-lg);
+}
+
+.shelf-showcase__header {
+  margin-bottom: 1rem;
+}
+
+.shelf-showcase__meta {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.shelf-showcase__title {
+  margin-bottom: 0;
+}
+
+.shelf-showcase__heading-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: var(--target-min);
+  min-width: var(--target-min);
+  padding-block: 0.25rem;
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.2em;
+}
+
+.shelf-showcase__heading-link:hover {
+  color: var(--accent);
+}
+
+.shelf-showcase__icon {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.shelf-showcase__stage {
+  position: relative;
+}
+
+// Mobile-first and default accessibility baseline: clean static vertical stack.
+.shelf-showcase__media {
+  position: static;
+  min-width: 0;
+}
+
+.shelf-showcase__photo-frame {
+  background-color: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.shelf-showcase__photo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(68vh, 40rem);
+  object-fit: contain;
+  margin-inline: auto;
+}
+
+.shelf-showcase__caption {
+  margin-top: 0.6rem;
+}
+
+.shelf-showcase__panel-wrap {
+  position: relative;
+  z-index: 2;
+  margin-top: 1rem;
+}
+
+// 100% opaque dark curatorial panel (>= 15:1 contrast, zero bleed-through).
+.shelf-showcase__panel {
+  background-color: var(--overlay-bg);
+  color: var(--overlay-fg);
+  opacity: 1;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.shelf-showcase__desc {
+  color: var(--overlay-fg);
+  max-width: var(--prose-max);
+  margin-bottom: 0;
+}
+
+.shelf-showcase__cta {
+  background-color: var(--overlay-accent);
+  color: var(--overlay-accent-fg);
+  border-color: var(--overlay-accent);
+}
+
+.shelf-showcase__cta:hover {
+  background-color: var(--overlay-fg);
+  color: var(--overlay-bg);
+  border-color: var(--overlay-fg);
+}
+
+.shelf-showcase__cta:focus-visible {
+  outline: 3px solid var(--overlay-accent);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--overlay-bg);
+}
+
+// Desktop Scroll-Rising Opaque Showcase (only when >= 760px and motion is allowed)
+@media (min-width: 760px) and (prefers-reduced-motion: no-preference) {
+  .shelf-showcase__media {
+    position: sticky;
+    top: var(--header-clearance, 5.5rem);
+    z-index: 1;
+  }
+
+  .shelf-showcase__panel-wrap {
+    margin-top: clamp(3rem, 12vh, 7.5rem);
+    padding-bottom: clamp(1.5rem, 6vh, 3.5rem);
+  }
+
+  .shelf-showcase__panel {
+    max-width: min(46rem, 92%);
+    margin-inline: auto;
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+// Mandatory Static-Stack Fallbacks (high-contrast, text-size >= 150% / expanded spacing, forced-colors)
+html.showcase-static .shelf-showcase__media,
+:root[data-theme="high-contrast"] .shelf-showcase__media {
+  position: static;
+  top: auto;
+  z-index: auto;
+}
+
+html.showcase-static .shelf-showcase__panel-wrap,
+:root[data-theme="high-contrast"] .shelf-showcase__panel-wrap {
+  margin-top: 1rem;
+  padding-bottom: 0;
+}
+
+html.showcase-static .shelf-showcase__panel,
+:root[data-theme="high-contrast"] .shelf-showcase__panel {
+  max-width: 100%;
+  box-shadow: none;
+}
+
+:root[data-theme="high-contrast"] .shelf-showcase {
+  padding: 1rem;
+}
+
+@media (prefers-contrast: more) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .shelf-showcase__media {
+    position: static;
+    top: auto;
+    z-index: auto;
+  }
+
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .shelf-showcase__panel-wrap {
+    margin-top: 1rem;
+    padding-bottom: 0;
+  }
+
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .shelf-showcase__panel {
+    max-width: 100%;
+    box-shadow: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .shelf-showcase__media {
+    position: static;
+    top: auto;
+    z-index: auto;
+  }
+
+  .shelf-showcase__panel-wrap {
+    margin-top: 1rem;
+    padding-bottom: 0;
+  }
+
+  .shelf-showcase__panel {
+    max-width: 100%;
+    box-shadow: none;
+    border: 2px solid CanvasText;
+  }
+
+  .home-hero__media,
+  .video-card__frame,
+  .auslan-card__placeholder,
+  .shelf-showcase__photo-frame {
+    border: 2px solid CanvasText;
+    box-shadow: none;
+  }
+}

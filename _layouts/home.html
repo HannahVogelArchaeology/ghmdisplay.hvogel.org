@@ -1,0 +1,185 @@
+---
+layout: default
+---
+{%- assign total_objects = 0 -%}
+{%- for key in site.shelves -%}
+  {%- assign shelf_item = site.data.shelves[key] -%}
+  {%- assign total_objects = total_objects | plus: shelf_item.artifacts.size -%}
+{%- endfor -%}
+
+<div class="home">
+  <section class="home-hero" aria-labelledby="hero-title">
+    <div class="wrapper home-hero__inner">
+      <div class="home-hero__text">
+        <p class="eyebrow">Curated by Hannah Vogel</p>
+        <h1 class="home-hero__title" id="hero-title">{{ page.title }}</h1>
+        <p class="home-hero__facts">
+          <span class="pill">{{ site.shelves.size }} shelves · {{ total_objects }} objects</span>
+        </p>
+        <p class="home-hero__visit">
+          <a href="https://www.mq.edu.au/faculty-of-arts/about/gale-history-museum">Gale History Museum, Macquarie University</a><br>
+          <span>10 November 2026 to 11 March 2027</span>
+        </p>
+        <div class="home-hero__actions">
+          <a class="btn btn--primary home-hero__cta"
+             href="#shelves"
+             data-kg-keys="Tab > Enter"
+             data-kg-label="Explore the Exhibition">Explore the Exhibition <span aria-hidden="true">&rarr;</span></a>
+          <a class="btn home-hero__cta"
+             href="#auslan"
+             data-kg-keys="Tab > Enter"
+             data-kg-label="Watch the Auslan Introduction">Watch the Auslan Introduction</a>
+        </div>
+      </div>
+
+      {%- assign photo = page.display_image -%}
+      {%- if photo and photo.url -%}
+      <figure class="home-hero__figure">
+        <div class="home-hero__media">
+          {% include responsive-image.html src="assets/images/display/Exhibition_overall.jpeg" alt=page.display_image.alt class="home-hero__image" sizes="(max-width: 900px) 100vw, 52vw" eager=true priority=true %}
+        </div>
+        <figcaption class="home-hero__caption">{{ photo.caption | escape }}</figcaption>
+      </figure>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <section class="home-section home-about" id="about" aria-labelledby="about-title">
+    <div class="wrapper">
+      <h2 class="home-section__title" id="about-title">About the Exhibition</h2>
+      <div class="home-about__grid">
+        <div class="home-about__prose">
+          {{ content }}
+        </div>
+
+        {%- assign video = page.video -%}
+        <div class="home-about__media">
+          <h3 class="video-card__heading" id="video-intro-title">Video Introduction</h3>
+          <figure class="video-card">
+            <div class="video-card__frame">
+              <video class="video-card__player"
+                     controls
+                     preload="metadata"
+                     playsinline
+                     {% if video.poster and video.poster != "" %}poster="{{ video.poster | relative_url }}"{% endif %}
+                     aria-labelledby="video-intro-title"
+                     data-kg-keys="Tab > Space"
+                     data-kg-label="Play or pause Video Introduction">
+                <source src="{{ video.src | relative_url }}" type="video/mp4">
+                {%- if video.captions and video.captions != "" -%}
+                <track kind="captions" src="{{ video.captions | relative_url }}" srclang="en-AU" label="English captions" default>
+                {%- endif -%}
+                <p>Your browser cannot play this video. Please read the full transcript below.</p>
+              </video>
+            </div>
+            {%- if video.caption and video.caption != "" -%}
+            <figcaption class="video-card__caption">{{ video.caption | escape }}</figcaption>
+            {%- endif -%}
+          </figure>
+          <details class="video-transcript">
+            <summary data-kg-keys="Tab > Enter/Space" data-kg-label="Toggle Video Introduction transcript">Transcript of Video Introduction</summary>
+            <div class="video-transcript__body">
+              {{ video.transcript | markdownify }}
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-section home-auslan" id="auslan" aria-labelledby="auslan-title">
+    <div class="wrapper home-auslan__inner">
+      <h2 class="home-section__title home-auslan__title" id="auslan-title">Auslan Introduction</h2>
+      {%- assign auslan = page.auslan_video -%}
+      {%- if auslan.transcript and auslan.transcript != "" -%}
+        {%- assign auslan_transcript = auslan.transcript -%}
+      {%- else -%}
+        {%- assign auslan_transcript = page.video.transcript -%}
+      {%- endif -%}
+
+      <figure class="video-card auslan-card">
+        {%- if auslan.src and auslan.src != "" -%}
+        <div class="video-card__frame video-card__frame--auslan">
+          <video class="video-card__player"
+                 controls
+                 preload="metadata"
+                 playsinline
+                 {% if auslan.poster and auslan.poster != "" %}poster="{{ auslan.poster | relative_url }}"{% endif %}
+                 aria-labelledby="auslan-title"
+                 data-kg-keys="Tab > Space"
+                 data-kg-label="Play or pause Auslan Introduction">
+            <source src="{{ auslan.src | relative_url }}" type="video/mp4">
+            {%- if auslan.captions and auslan.captions != "" -%}
+            <track kind="captions" src="{{ auslan.captions | relative_url }}" srclang="en-AU" label="English captions" default>
+            {%- endif -%}
+            <p>Your browser cannot play this video. Please read the full transcript below.</p>
+          </video>
+        </div>
+        {%- else -%}
+        <div class="auslan-card__placeholder">
+          {% include icon.html name="captions" class="icon auslan-card__icon" size=32 %}
+          <p class="auslan-card__status-title">Auslan interpreted video arriving for launch</p>
+          <p class="auslan-card__status-body">An Auslan interpreted video introduction to this exhibition and website is being finalised for launch and will appear here shortly. In the meantime, you can read the full exhibition introduction transcript below or watch the captioned Video Introduction above.</p>
+        </div>
+        {%- endif -%}
+        <figcaption class="video-card__caption auslan-card__caption">{{ auslan.caption | escape }}</figcaption>
+      </figure>
+
+      <details class="video-transcript auslan-transcript">
+        <summary data-kg-keys="Tab > Enter/Space" data-kg-label="Toggle Auslan Introduction transcript">Transcript of Auslan Introduction</summary>
+        <div class="video-transcript__body">
+          {{ auslan_transcript | markdownify }}
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="home-section home-shelves" id="shelves" aria-labelledby="shelves-title">
+    <div class="wrapper">
+      <h2 class="home-section__title" id="shelves-title">Explore the Exhibition</h2>
+      <div class="shelf-showcase-list">
+        {%- for key in site.shelves -%}
+          {%- assign shelf_data = site.data.shelves[key] -%}
+          {%- assign shelf_title = shelf_data.title -%}
+          {%- assign shelf_desc = shelf_data.description -%}
+          {%- assign count = shelf_data.artifacts.size -%}
+          {%- assign shelf_url = '/shelves/' | append: key | append: '/' -%}
+          {%- assign primary_img = shelf_data.images | first -%}
+          <article class="shelf-showcase" aria-labelledby="shelf-heading-{{ key }}">
+            <header class="shelf-showcase__header">
+              <p class="shelf-showcase__meta">Shelf {{ forloop.index }} of {{ site.shelves.size }} · {{ count }} object{% if count != 1 %}s{% endif %}</p>
+              <h3 class="shelf-showcase__title" id="shelf-heading-{{ key }}">
+                <a class="shelf-showcase__heading-link"
+                   href="{{ shelf_url | relative_url }}"
+                   data-kg-keys="Tab > Enter"
+                   data-kg-label="Open {{ shelf_title }}">
+                  {% include shelf-icon.html shelf=key size=28 class="shelf-showcase__icon" %}
+                  <span>{{ shelf_title }}</span>
+                </a>
+              </h3>
+            </header>
+
+            <div class="shelf-showcase__stage">
+              <figure class="shelf-showcase__media">
+                <div class="shelf-showcase__photo-frame">
+                  {% include responsive-image.html src=primary_img.url alt=primary_img.altText class="shelf-showcase__photo" sizes="(max-width: 759px) 100vw, min(72rem, 94vw)" %}
+                </div>
+                <figcaption class="shelf-showcase__caption">{{ primary_img.caption | escape }}</figcaption>
+              </figure>
+
+              <div class="shelf-showcase__panel-wrap">
+                <div class="shelf-showcase__panel">
+                  <p class="shelf-showcase__desc">{{ shelf_desc }}</p>
+                  <a class="btn shelf-showcase__cta"
+                     href="{{ shelf_url | relative_url }}"
+                     data-kg-keys="Tab > Enter"
+                     data-kg-label="View {{ shelf_title }}">View {{ shelf_title }} <span aria-hidden="true">&rarr;</span></a>
+                </div>
+              </div>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+</div>
