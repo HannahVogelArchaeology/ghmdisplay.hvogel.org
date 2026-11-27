@@ -4,7 +4,7 @@ This guide supports lived-experience User Acceptance Testing (UAT) of the **Disa
 
 ## 1. Ethics, Privacy, and Participation Arrangements
 
-- **Quality improvement versus publishable research:** Community consultation undertaken to identify usability barriers and improve the public exhibition website operates as quality improvement and co-design. Participant recordings, verbatim quotes, or custom accessibility-preference analytics must not be published as research data without prior Macquarie University Human Research Ethics Committee approval. Consistent with this boundary, custom accessibility-event telemetry remains disabled by default (`analytics.custom_events: false`).
+- **Quality improvement versus publishable research:** Community consultation undertaken to identify usability barriers and improve the public exhibition website operates as quality improvement and co-design. Participant recordings, verbatim quotes, or aggregate accessibility and navigation custom events (`analytics.custom_events: true`, cookieless and disabled in museum kiosk mode) must not be published as research data without prior Macquarie University Human Research Ethics Committee approval.
 - **Flexible, low-burden participation:** Testers may choose whichever format suits their access needs and energy: an asynchronous screen-and-voice recording (for example, via Zoom, Loom, or OBS), a live facilitated walkthrough with the curator, or brief written notes responding to the tasks below.
 - **Advance materials and attribution:** Share the site URL and plain-text task prompts ahead of each session. Confirm each tester's preference for attribution (named acknowledgement on the exhibition site or remaining anonymous).
 

@@ -45,6 +45,7 @@ if (jumpTrack) {
       const targetId = link.dataset.jumpTarget;
       const article = targetId ? document.getElementById(targetId) : null;
       if (!article) return;
+      window.ghmTrack?.('nav_jump_ribbon', targetId);
 
       e.preventDefault();
       const heading = article.querySelector('h2') || article;
@@ -110,6 +111,7 @@ if (modelDialog) {
 
       if (!modelDialog.open) {
         modelDialog.showModal();
+        window.ghmTrack?.('media_3d_open', btn.dataset.modelTitle || '3d_model');
       }
       closeBtn?.focus();
     });
@@ -189,6 +191,13 @@ document.querySelectorAll('[data-audio-player]').forEach(wrapper => {
   const announce = msg => {
     if (statusEl) statusEl.textContent = msg;
   };
+
+  let audioTracked = false;
+  audio.addEventListener('play', () => {
+    if (audioTracked) return;
+    audioTracked = true;
+    window.ghmTrack?.('media_audio_play', wrapper.closest('[id]')?.id || objectLabel);
+  });
 
   function syncPlayState() {
     const playing = !audio.paused && !audio.ended;

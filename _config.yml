@@ -36,7 +36,7 @@ kiosk:
 
 analytics:
   enabled: true
-  custom_events: false
+  custom_events: true
 
 image_sizes: [400, 800, 1600]
 

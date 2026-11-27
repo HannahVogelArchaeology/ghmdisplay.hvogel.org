@@ -69,6 +69,7 @@ function renderResults(items, query) {
 
     a.append(title, meta);
     a.addEventListener('click', () => {
+      window.ghmTrack?.('nav_search_select', item.type || 'result');
       const targetUrl = new URL(a.href, window.location.origin);
       const isSamePageJump = targetUrl.pathname === window.location.pathname && Boolean(targetUrl.hash);
       if (isSamePageJump) {
@@ -94,11 +95,12 @@ function renderResults(items, query) {
   resultsEl.appendChild(frag);
 }
 
-async function openSearch(opener) {
+async function openSearch(opener, source = 'button') {
   if (!dialog) return;
   if (!dialog.open) {
     lastTrigger = opener || trigger;
     dialog.showModal();
+    window.ghmTrack?.('nav_search_open', source);
   }
   if (input) {
     input.focus();
@@ -120,7 +122,7 @@ dialog?.addEventListener('close', () => {
   lastTrigger?.focus();
 });
 
-trigger?.addEventListener('click', () => openSearch(trigger));
+trigger?.addEventListener('click', () => openSearch(trigger, 'button'));
 closeBtn?.addEventListener('click', closeSearch);
 
 dialog?.addEventListener('click', e => {
@@ -156,7 +158,7 @@ dialog?.addEventListener('keydown', e => {
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === 'k') {
     e.preventDefault();
-    openSearch(document.activeElement instanceof HTMLElement ? document.activeElement : trigger);
+    openSearch(document.activeElement instanceof HTMLElement ? document.activeElement : trigger, 'ctrl_k');
     return;
   }
 
@@ -164,6 +166,6 @@ document.addEventListener('keydown', e => {
     if (document.querySelector('dialog[open]')) return;
     if (e.target instanceof Element && e.target.closest('input, textarea, select, [contenteditable]')) return;
     e.preventDefault();
-    openSearch(document.activeElement instanceof HTMLElement ? document.activeElement : trigger);
+    openSearch(document.activeElement instanceof HTMLElement ? document.activeElement : trigger, 'slash');
   }
 });

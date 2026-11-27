@@ -218,8 +218,8 @@ test.describe('Global Chrome, AAA Accessibility Panel, Search & Assistive Device
     const footerText = await footer.innerText();
     expect(footerText).not.toMatch(/[\[\]]/);
 
-    // Analytics attribute & window.ghmTrack no-op when custom_events is false
-    await expect(page.locator('html')).toHaveAttribute('data-analytics-custom-events', 'false');
+    // Analytics attribute & window.ghmTrack forwards to window.nca_event when custom_events is true
+    await expect(page.locator('html')).toHaveAttribute('data-analytics-custom-events', 'true');
     const trackCalls = await page.evaluate(() => {
       const calls = [];
       window.nca_event = (...args) => calls.push(args);
@@ -228,7 +228,7 @@ test.describe('Global Chrome, AAA Accessibility Panel, Search & Assistive Device
       }
       return calls;
     });
-    expect(trackCalls).toEqual([]);
+    expect(trackCalls).toEqual([['a11y_theme', 'dark']]);
 
     // Production analytics script tag present
     await expect(page.locator('script[src="https://nocookieanalytics.com/latest.js"]')).toHaveCount(1);

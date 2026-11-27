@@ -167,6 +167,7 @@ if (photoDialog) {
     showSlide(index);
     if (!photoDialog.open) {
       photoDialog.showModal();
+      window.ghmTrack?.('media_photo_enlarge', title || 'photo');
     }
     closeBtn?.focus();
   };

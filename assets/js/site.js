@@ -30,7 +30,11 @@ if (nav && navToggle) {
   };
   const isOpen = () => nav.classList.contains('is-open');
 
-  navToggle.addEventListener('click', () => setOpen(!isOpen()));
+  navToggle.addEventListener('click', () => {
+    const nextOpen = !isOpen();
+    setOpen(nextOpen);
+    if (nextOpen) window.ghmTrack?.('nav_mobile_menu', 'open');
+  });
 
   document.addEventListener('click', e => {
     if (isOpen() && !nav.contains(e.target)) setOpen(false);
@@ -67,7 +71,15 @@ document.addEventListener('keydown', e => {
   if (!e.shiftKey || e.key !== 'ArrowUp' || e.ctrlKey || e.metaKey || e.altKey) return;
   if (e.target.closest('input, textarea, select, [contenteditable], dialog')) return;
   e.preventDefault();
+  window.ghmTrack?.('nav_stepper', 'shortcut_top');
   goToTop();
+});
+
+document.querySelectorAll('.page-turn__link').forEach(link => {
+  link.addEventListener('click', () => {
+    const dir = link.classList.contains('page-turn__link--prev') ? 'prev' : 'next';
+    window.ghmTrack?.('nav_page_turn', dir);
+  });
 });
 
 if (stepBar) {
@@ -239,15 +251,22 @@ if (stepBar) {
 
     topButton?.addEventListener('click', () => {
       cancelSteer();
+      window.ghmTrack?.('nav_stepper', 'top');
       goToTop();
     });
     prevButton?.addEventListener('click', () => {
       const idx = previousIndex();
-      if (idx >= 0) goToIndex(idx);
+      if (idx >= 0) {
+        window.ghmTrack?.('nav_stepper', 'prev');
+        goToIndex(idx);
+      }
     });
     nextButton?.addEventListener('click', () => {
       const idx = nextIndex();
-      if (idx >= 0) goToIndex(idx);
+      if (idx >= 0) {
+        window.ghmTrack?.('nav_stepper', 'next');
+        goToIndex(idx);
+      }
     });
 
     // WCAG 1.4.13 hoverable, persistent, Escape-dismissible hint label

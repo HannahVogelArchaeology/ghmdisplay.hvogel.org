@@ -308,6 +308,7 @@ async function mountAbleLazyPlayer(container) {
   const statusEl = container.querySelector('[data-able-status]');
 
   container.dataset.ableState = 'loading';
+  window.ghmTrack?.('media_video_play', playerId);
   container.setAttribute('aria-busy', 'true');
   container.classList.add('able-lazy--loading');
   if (trigger) trigger.setAttribute('aria-disabled', 'true');
