@@ -1,7 +1,7 @@
 ---
 layout: shelf
 title: Top Shelf
-seo_title: "Top Shelf Disability Heritage Museum Exhibition"
+seo_title: "Top Shelf - Disability Heritage Museum Exhibition"
 permalink: /shelves/top/
 shelf: top
 shelf_index: 1

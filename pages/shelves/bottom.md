@@ -1,7 +1,7 @@
 ---
 layout: shelf
 title: Bottom Shelf
-seo_title: "Bottom Shelf Disability Heritage Museum Exhibition"
+seo_title: "Bottom Shelf - Disability Heritage Museum Exhibition"
 permalink: /shelves/bottom/
 shelf: bottom
 shelf_index: 3

@@ -1,7 +1,7 @@
 ---
 layout: shelf
 title: Middle Shelf
-seo_title: "Middle Shelf Disability Heritage Museum Exhibition"
+seo_title: "Middle Shelf - Disability Heritage Museum Exhibition"
 permalink: /shelves/middle/
 shelf: middle
 shelf_index: 2

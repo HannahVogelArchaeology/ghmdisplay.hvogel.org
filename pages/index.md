@@ -1,7 +1,7 @@
 ---
 layout: home
 title: "Disability Heritage: Archaeology with Difference"
-seo_title: "Home Disability Heritage Museum Exhibition"
+seo_title: "Disability Heritage Museum Exhibition"
 description: "Museum exhibition Disability Heritage: Archaeology with Difference, curated by Hannah Vogel"
 nav_title: Home
 permalink: /

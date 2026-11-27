@@ -291,4 +291,36 @@ test.describe('Outcome 3C: Curation, Accessibility Page, 404 & Repository Govern
     expect(uatProtocol).not.toMatch(/Option 3/i);
     expect(uatProtocol).not.toMatch(/\[disability\]/i);
   });
+
+  test('SEO/OG titles stay within 60 chars and JSON-LD structured data parses cleanly on all public routes', async ({ page }) => {
+    const routes = [
+      { path: '/', title: 'Disability Heritage Museum Exhibition', expectedTypes: ['WebSite', 'Person', 'WebPage', 'ExhibitionEvent'] },
+      { path: '/shelves/top/', title: 'Top Shelf - Disability Heritage Museum Exhibition', expectedTypes: ['WebSite', 'Person', 'CollectionPage', 'BreadcrumbList', 'ItemList'] },
+      { path: '/shelves/middle/', title: 'Middle Shelf - Disability Heritage Museum Exhibition', expectedTypes: ['WebSite', 'Person', 'CollectionPage', 'BreadcrumbList', 'ItemList'] },
+      { path: '/shelves/bottom/', title: 'Bottom Shelf - Disability Heritage Museum Exhibition', expectedTypes: ['WebSite', 'Person', 'CollectionPage', 'BreadcrumbList', 'ItemList'] },
+      { path: '/curation/', title: 'Curation - Disability Heritage Museum Exhibition', expectedTypes: ['WebSite', 'Person', 'AboutPage', 'BreadcrumbList'] },
+      { path: '/accessibility/', title: 'Accessibility Page - Disability Heritage Museum Exhibition', expectedTypes: ['WebSite', 'Person', 'WebPage', 'BreadcrumbList'] },
+    ];
+
+    for (const r of routes) {
+      await page.goto(r.path);
+      await expect(page).toHaveTitle(r.title);
+      expect(r.title.length).toBeLessThanOrEqual(60);
+      await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', r.title);
+      await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', r.title);
+
+      const ldScripts = page.locator('script[type="application/ld+json"]');
+      await expect(ldScripts).toHaveCount(1);
+      const raw = await ldScripts.first().textContent();
+      const parsed = JSON.parse(raw);
+      expect(parsed['@context']).toBe('https://schema.org');
+      const types = parsed['@graph'].map(node => node['@type']);
+      for (const t of r.expectedTypes) {
+        expect(types).toContain(t);
+      }
+    }
+
+    await page.goto('/404.html');
+    await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(0);
+  });
 });

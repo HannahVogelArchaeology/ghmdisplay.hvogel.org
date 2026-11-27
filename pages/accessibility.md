@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Accessibility
-seo_title: "Accessibility Page Disability Heritage Museum Exhibition"
+seo_title: "Accessibility Page - Disability Heritage Museum Exhibition"
 permalink: /accessibility/
 description: "The accessibility design in the museum exhibition and website for Disability Heritage: Archaeology with Difference"
 prev_url: /curation/

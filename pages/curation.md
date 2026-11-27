@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Curation & Acknowledgements
-seo_title: "Curation Disability Heritage Museum Exhibition"
+seo_title: "Curation - Disability Heritage Museum Exhibition"
 nav_title: Curation
 permalink: /curation/
 description: "Author information and acknowledgments by Hannah Vogel. Curator of Disability Heritage Museum Exhibition"
