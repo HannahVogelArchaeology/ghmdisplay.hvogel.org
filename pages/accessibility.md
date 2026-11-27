@@ -1,8 +1,9 @@
 ---
 layout: page
 title: Accessibility
+seo_title: "Accessibility Page Disability Heritage Museum Exhibition"
 permalink: /accessibility/
-description: Website accessibility features, customisable display controls, keyboard and screen reader tools, and on-campus visitor access at the Gale History Museum.
+description: "The accessibility design in the museum exhibition and website for Disability Heritage: Archaeology with Difference"
 prev_url: /curation/
 prev_label: Curation & Acknowledgements
 next_url: /

@@ -217,9 +217,9 @@ test.describe('Outcome 3C: Curation, Accessibility Page, 404 & Repository Govern
       await expect(footer.locator('a[href="https://www.linkedin.com/in/hannah-vogel-216039149/"]')).toHaveCount(1);
       await expect(footer.locator('a[href="https://www.instagram.com/hannah_the_archaeologist/"]')).toHaveCount(1);
 
-      // Analytics script + ethics gate attribute
+      // Analytics script + custom events attribute
       await expect(page.locator('script[src="https://nocookieanalytics.com/latest.js"]')).toHaveCount(1);
-      await expect(page.locator('html')).toHaveAttribute('data-analytics-custom-events', 'false');
+      await expect(page.locator('html')).toHaveAttribute('data-analytics-custom-events', 'true');
 
       // Zero square brackets or scar tissue in rendered <main> and <footer>
       const mainText = await page.locator('main#main').innerText();

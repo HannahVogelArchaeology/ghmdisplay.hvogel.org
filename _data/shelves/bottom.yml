@@ -6,6 +6,10 @@ images:
     label: Shelf view
     altText: "The bottom shelf of the display case, with three feeding vessels: a white porcelain feeding cup (9) with a long pouring spout and small handle, a ceramic spouted vessel (10) with a handle over the top of a flaring rim, and a small black ceramic feeding vessel (11) with an enclosed top, a narrow handle and a thin pouring spout."
     caption: Photograph of the bottom shelf of the display © Gale History Museum
+  - url: assets/images/display/Bottom_shelf_2.jpg
+    label: Objects 9, 10 and 11
+    altText: "The bottom shelf of the display case, with three feeding vessels: a white porcelain feeding cup (9) with a long pouring spout and small handle, a ceramic spouted vessel (10) with a handle over the top of a flaring rim, and a small black ceramic feeding vessel (11) with an enclosed top, a narrow handle and a thin pouring spout."
+    caption: Photograph of the bottom shelf of the display. Objects 9, 10 and 11 © Gale History Museum
 artifacts:
   - metaDescription:
       name: Feeding cup

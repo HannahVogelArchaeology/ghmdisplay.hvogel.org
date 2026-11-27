@@ -1,6 +1,7 @@
 ---
 layout: shelf
 title: Bottom Shelf
+seo_title: "Bottom Shelf Disability Heritage Museum Exhibition"
 permalink: /shelves/bottom/
 shelf: bottom
 shelf_index: 3
@@ -9,7 +10,7 @@ prev_url: /shelves/middle/
 prev_label: Middle Shelf
 next_url: /curation/
 next_label: Curation & Acknowledgements
-description: "Bottom Shelf of Disability Heritage: Archaeology with Difference — three historical feeding vessels as evidence of community and care."
+description: "Overview of the bottom shelf of the Disability Heritage: Archaeology with Difference exhibition"
 image:
   path: /assets/images/og/bottom.jpg
   width: 1200
