@@ -61,10 +61,15 @@
 
 .table-scroll {
   width: 100%;
+  max-width: 100%;
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--card);
+}
+
+.table-scroll table {
+  min-width: 30rem;
 }
 
 .page-content th,

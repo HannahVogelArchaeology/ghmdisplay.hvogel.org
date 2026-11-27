@@ -113,6 +113,10 @@
   border-bottom: 1px solid var(--border);
 }
 
+.curation__licenses thead th {
+  white-space: nowrap;
+}
+
 .curation__licenses tbody th[scope="row"] {
   font-weight: 600;
   color: var(--text);

@@ -21,13 +21,14 @@
 
 .skip-link {
   position: fixed;
-  top: -100%;
+  top: -9999px;
   left: 1rem;
   z-index: 2000;
   display: inline-flex;
   align-items: center;
   min-height: var(--target-min);
-  padding: 0.65rem 1.15rem;
+  max-width: calc(100vw - 2rem);
+  padding: clamp(8px, 0.55rem, 12px) clamp(12px, 1rem, 18px);
   background: var(--accent);
   color: var(--accent-fg);
   font-weight: 700;
@@ -46,17 +47,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: clamp(6px, 0.45rem, 10px);
   min-height: var(--target-min);
   min-width: var(--target-min);
-  padding: 0.625rem 1.125rem;
+  max-width: 100%;
+  padding: clamp(8px, 0.5rem, 12px) clamp(12px, 0.95rem, 18px);
   border-radius: var(--radius-md);
   border: 2px solid var(--border);
   background: var(--card);
   color: var(--text);
   font-weight: 600;
+  text-align: center;
   text-decoration: none;
   line-height: 1.25;
+  overflow-wrap: break-word;
   transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 

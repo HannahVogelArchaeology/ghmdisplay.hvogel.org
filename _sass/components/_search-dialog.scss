@@ -2,35 +2,42 @@
 
 .search-dialog {
   width: min(40rem, calc(100vw - 1.5rem));
-  padding: 1.25rem;
+  padding: clamp(14px, 3vw, 20px);
+  overflow-y: auto;
 }
 
 .search-dialog__head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 8px 12px;
   margin-bottom: 0.9rem;
 }
 
 .search-dialog__title {
   margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
   font-size: 1.25rem;
+  overflow-wrap: break-word;
 }
 
 .search-dialog__close {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
+  flex-shrink: 0;
+  gap: 6px;
   min-width: var(--target-min);
   min-height: var(--target-min);
-  padding: 0.45rem 0.75rem;
+  padding: 8px 12px;
   border: 2px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--surface);
   color: var(--text);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .search-dialog__form {
@@ -66,7 +73,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 55vh;
+  max-height: min(45dvh, 22rem);
   overflow-y: auto;
   display: flex;
   flex-direction: column;

@@ -3,7 +3,7 @@
 
 .toc-nav {
   margin-bottom: 2rem;
-  padding: 1.1rem 1.25rem;
+  padding: clamp(12px, 3vw, 20px);
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -16,7 +16,8 @@
   color: var(--text);
 }
 
-.toc-nav__list {
+.toc-nav__list,
+.page-content .toc-nav__list {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -27,14 +28,17 @@
 
 .toc-nav__list li {
   margin: 0;
+  min-width: 0;
 }
 
 .toc-nav__list a {
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
   min-height: var(--target-min);
   padding: 0.35rem 0;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .accessibility__section {
@@ -47,7 +51,7 @@
 
 .accessibility__callout {
   margin-block: 1.5rem;
-  padding: 1.1rem 1.25rem;
+  padding: clamp(12px, 3vw, 20px);
   background: var(--surface);
   border: 1px solid var(--border);
   border-left: 4px solid var(--accent);
@@ -70,13 +74,14 @@
 // 404 Page Not Found navigation
 .not-found__nav {
   margin-top: 1.75rem;
-  padding: 1.1rem 1.25rem;
+  padding: clamp(12px, 3vw, 20px);
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
 }
 
-.not-found__list {
+.not-found__list,
+.page-content .not-found__list {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -87,14 +92,17 @@
 
 .not-found__list li {
   margin: 0;
+  min-width: 0;
 }
 
 .not-found__list a {
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
   min-height: var(--target-min);
   padding: 0.35rem 0;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 :root[data-theme="high-contrast"] {

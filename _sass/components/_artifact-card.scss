@@ -49,7 +49,12 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 8px;
+}
+
+.artifact-gallery__nav {
+  padding: clamp(8px, 0.45rem, 12px) clamp(10px, 0.75rem, 16px);
+  white-space: nowrap;
 }
 
 .artifact-gallery__status {
@@ -58,6 +63,18 @@
   font-weight: 600;
   color: var(--text-muted);
   padding-inline: 0.25rem;
+}
+
+@media (max-width: 520px) {
+  .artifact-gallery__nav {
+    flex: 1 1 auto;
+  }
+
+  .artifact-gallery__status {
+    order: 3;
+    flex: 1 0 100%;
+    text-align: center;
+  }
 }
 
 .artifact-gallery__caption {
@@ -169,7 +186,7 @@
 
 :root[data-theme="high-contrast"] {
   .artifact-card {
-    padding: 1.25rem;
+    padding: clamp(12px, 3vw, 20px);
     border: 2px solid var(--border);
   }
 
@@ -180,7 +197,7 @@
 
 @media (forced-colors: active) {
   .artifact-card {
-    padding: 1.25rem;
+    padding: clamp(12px, 3vw, 20px);
     border: 2px solid CanvasText;
   }
 

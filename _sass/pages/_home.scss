@@ -63,6 +63,12 @@
   text-align: center;
 }
 
+@media (max-width: 520px) {
+  .home-hero__cta {
+    flex: 1 1 100%;
+  }
+}
+
 .home-hero__figure {
   min-width: 0;
 }
@@ -334,7 +340,7 @@
 
 :root[data-theme="high-contrast"] {
   .shelf-showcase {
-    padding: 1.25rem;
+    padding: clamp(12px, 3vw, 20px);
     border: 2px solid var(--border);
   }
 }

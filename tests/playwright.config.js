@@ -7,6 +7,52 @@ const localChrome = !process.env.CI
   ? (process.env.CHROME || (fs.existsSync('/usr/bin/google-chrome') ? '/usr/bin/google-chrome' : undefined))
   : undefined;
 
+const chromiumLaunchOptions = localChrome
+  ? { executablePath: localChrome, args: ['--no-sandbox'] }
+  : undefined;
+
+const iphone13 = devices['iPhone 13'];
+
+const projects = [
+  {
+    name: 'desktop-chromium',
+    use: {
+      ...devices['Desktop Chrome'],
+      launchOptions: chromiumLaunchOptions,
+    },
+  },
+  {
+    name: 'mobile-chromium',
+    use: {
+      ...devices['Pixel 7'],
+      launchOptions: chromiumLaunchOptions,
+    },
+  },
+  {
+    name: 'iphone13-chromium',
+    use: {
+      browserName: 'chromium',
+      viewport: iphone13.viewport,
+      deviceScaleFactor: iphone13.deviceScaleFactor,
+      isMobile: true,
+      hasTouch: true,
+      userAgent: iphone13.userAgent,
+      launchOptions: chromiumLaunchOptions,
+    },
+  },
+];
+
+// Optional WebKit (Safari engine) project: enable via PLAYWRIGHT_WEBKIT=1 once host
+// WebKit runtime dependencies (e.g. libmanette-0.2-0 on Ubuntu 26.04) are installed.
+if (process.env.PLAYWRIGHT_WEBKIT === '1') {
+  projects.push({
+    name: 'iphone13-webkit',
+    use: {
+      ...iphone13,
+    },
+  });
+}
+
 module.exports = defineConfig({
   testDir: './e2e',
   timeout: 30000,
@@ -16,7 +62,6 @@ module.exports = defineConfig({
     baseURL,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
-    launchOptions: localChrome ? { executablePath: localChrome, args: ['--no-sandbox'] } : undefined,
   },
   webServer: process.env.BASE_URL
     ? undefined
@@ -26,8 +71,5 @@ module.exports = defineConfig({
         reuseExistingServer: false,
         timeout: 15000,
       },
-  projects: [
-    { name: 'desktop-chromium', use: { ...devices['Desktop Chrome'] } },
-    { name: 'mobile-chromium', use: { ...devices['Pixel 7'] } },
-  ],
+  projects,
 });

@@ -241,6 +241,27 @@
   text-underline-offset: 0.18em;
 }
 
+// Clean stacked photo + solid caption band on mobile/tablet (< 900px),
+// ensuring consistent reflow under both site 200% and Safari browser-level 200% zoom.
+@media (max-width: 899px) {
+  .object-jump__card {
+    min-height: auto;
+    justify-content: flex-start;
+  }
+
+  .object-jump__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .object-jump__body {
+    flex: 1 0 auto;
+    padding: 0.75rem;
+    background: var(--overlay-bg);
+  }
+}
+
 // Sleek overlapping fanned gallery ribbon on wider desktop screens (dismissible with Esc)
 @media (min-width: 900px) {
   .object-jump__track {

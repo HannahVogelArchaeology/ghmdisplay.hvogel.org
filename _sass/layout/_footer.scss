@@ -43,9 +43,11 @@
 .footer-links a {
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
   min-height: var(--target-min);
   padding-block: 0.25rem;
   font-size: 0.9375rem;
+  overflow-wrap: anywhere;
 }
 
 .footer-social {
@@ -86,6 +88,10 @@
 .footer-acknowledgements p {
   font-size: 0.9375rem;
   max-width: none;
+}
+
+.footer-acknowledgements a {
+  overflow-wrap: anywhere;
 }
 
 .footer-legal {
