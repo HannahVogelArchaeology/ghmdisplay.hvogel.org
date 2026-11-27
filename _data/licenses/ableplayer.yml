@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=../schemas/license.schema.yml
+name: Able Player 5.0.0
+use: lazy-loaded accessible video player with captions and transcripts (bundles DOMPurify 3.4.0)
+used_for: website
+licence:
+  name: MIT License
+  url: https://github.com/ableplayer/ableplayer/blob/main/LICENSE
+  note: bundled DOMPurify dual-licensed under Apache 2.0 / MPL 2.0
+author:
+  name: Able Player contributors (lead maintainer Joe Dolson; originally University of Washington)
+  url: https://ableplayer.github.io/ableplayer/

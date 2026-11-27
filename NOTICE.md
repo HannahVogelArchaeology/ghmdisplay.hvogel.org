@@ -3,7 +3,7 @@
 ## Exhibition Content and Website Code
 
 - **Exhibition content and media:** All curatorial text, object descriptions, captions, alt text, photographs, audio descriptions, transcripts, and videos are **© 2026 Hannah Vogel and Gale History Museum**. All rights reserved unless otherwise noted beside an individual asset.
-- **Website source code:** All original website templates, stylesheets, scripts, and build tooling in this repository—including the self-authored client-side SVG QR code generator (`assets/js/qr-svg.js`), exhibition shelf schematic (`_includes/shelf-icon.html`), and site icon (`assets/favicon.svg`)—are distributed under the **MIT License** (see [`LICENSE`](LICENSE)).
+- **Website source code:** All original website templates, stylesheets, scripts, and build tooling in this repository—including the self-authored client-side SVG QR code generator (`assets/js/qr-svg.js`) and exhibition shelf schematic (`_includes/shelf-icon.html`)—are distributed under the **MIT License** (see [`LICENSE`](LICENSE)).
 
 ### Template and Prototype Provenance
 
@@ -13,7 +13,16 @@ This site was synthesised from two Macquarie University student capstone prototy
 
 ## Third-Party Assets Sent to Website Visitors
 
-All fonts and icons used on the live website are self-hosted inside `assets/` with zero external font or icon CDNs.
+All reading fonts and interface icons used on the live website are self-hosted inside `assets/` with zero external font or icon CDNs. Accessible video playback lazily loads pinned, SHA-384 Subresource Integrity (SRI)-verified bundles of Able Player and jQuery slim from jsDelivr only when a visitor selects Play (degrading gracefully to native HTML5 `<video controls>` if offline).
+
+### Accessible Video Player (Loaded On Demand)
+
+- **Able Player 5.0.0:** Copyright Able Player contributors (lead maintainer Joe Dolson; originally developed at the University of Washington, <https://ableplayer.github.io/ableplayer/>). Licensed under the **MIT License**. The minified production bundle includes **DOMPurify 3.4.0** (Copyright Cure53 and contributors; dual-licensed under the Apache License 2.0 and Mozilla Public License 2.0).
+- **jQuery 3.7.1 (slim build):** Copyright OpenJS Foundation and other contributors (<https://jquery.com/>). Licensed under the **MIT License**.
+
+### Site Favicon
+
+- **Terracotta vessel favicon (`assets/favicon.svg` and derived `.ico`/`.png` icons):** Adopted from the Group 34 exhibition prototype (originally sourced via SVG Repo).
 
 ### Fonts (SIL Open Font License 1.1)
 

@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=../schemas/license.schema.yml
+name: jQuery 3.7.1 slim
+use: lazy-loaded runtime dependency for Able Player
+used_for: website
+licence:
+  name: MIT License
+  url: https://jquery.com/license/
+author:
+  name: OpenJS Foundation and jQuery contributors
+  url: https://jquery.com

@@ -312,7 +312,7 @@ test.describe('Gallery Kiosk Mode & Client-Side SVG QR Modal (AC-KIOSK-1)', () =
     const kioskCalls = await page.evaluate(() => {
       const calls = [];
       document.documentElement.dataset.analyticsCustomEvents = 'true';
-      window.nca_track = (...args) => calls.push(args);
+      window.nca_event = (...args) => calls.push(args);
       window.ghmTrack('a11y_theme', 'dark');
       return calls;
     });

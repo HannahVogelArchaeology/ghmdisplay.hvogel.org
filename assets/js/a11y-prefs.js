@@ -23,13 +23,13 @@ function isKioskActive() {
 }
 
 // Ethics-gated custom event tracker: strict no-op unless explicitly enabled via
-// _config.yml analytics.custom_events: true, non-kiosk session, and nca_track loaded.
+// _config.yml analytics.custom_events: true, non-kiosk session, and nca_event loaded.
 export function ghmTrack(eventName, value) {
   if (document.documentElement.dataset.analyticsCustomEvents !== 'true') return;
   if (isKioskActive()) return;
-  if (typeof window.nca_track !== 'function') return;
+  if (typeof window.nca_event !== 'function') return;
   try {
-    window.nca_track(eventName, value);
+    window.nca_event(eventName, value != null ? String(value) : undefined);
   } catch {}
 }
 

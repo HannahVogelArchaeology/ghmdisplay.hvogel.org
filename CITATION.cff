@@ -1,11 +1,25 @@
 cff-version: 1.2.0
-message: "Please cite this student project using the metadata in this file."
-title: "Group 33 exhibition website sandbox"
+message: "If you cite or adapt this exhibition website, please use the metadata below."
+title: "Disability Heritage: Archaeology with Difference — Online Exhibition Website"
 type: software
 authors:
-  # Replace this group placeholder with one entry per contributor, using each
-  # person's preferred public name and optional ORCID or profile URL.
-  - name: "Group 33 contributors"
-repository-code: "https://github.com/HannahVogelArchaeology/group33"
-url: "https://hannahvogelarchaeology.github.io/group33/"
+  - family-names: Vogel
+    given-names: Hannah
+    affiliation: "School of Humanities, Macquarie University"
+    website: "https://hvogel.org/"
+  - family-names: Ballsun-Stanton
+    given-names: Brian
+    affiliation: "Macquarie University"
+  - name: "Macquarie University Student Capstone Teams (Group 33 and Group 34)"
+repository-code: "https://github.com/HannahVogelArchaeology/ghmdisplay.hvogel.org"
+url: "https://ghmdisplay.hvogel.org/"
 license: MIT
+date-released: "2026-11-27"
+keywords:
+  - archaeology
+  - disability-heritage
+  - museum-exhibition
+  - accessibility
+  - wcag
+  - auslan
+  - jekyll

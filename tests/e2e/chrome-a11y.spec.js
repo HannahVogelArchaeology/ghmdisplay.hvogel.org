@@ -222,7 +222,7 @@ test.describe('Global Chrome, AAA Accessibility Panel, Search & Assistive Device
     await expect(page.locator('html')).toHaveAttribute('data-analytics-custom-events', 'false');
     const trackCalls = await page.evaluate(() => {
       const calls = [];
-      window.nca_track = (...args) => calls.push(args);
+      window.nca_event = (...args) => calls.push(args);
       if (typeof window.ghmTrack === 'function') {
         window.ghmTrack('a11y_theme', 'dark');
       }
