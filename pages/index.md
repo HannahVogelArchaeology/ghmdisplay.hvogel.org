@@ -60,9 +60,10 @@ video:
 
     If you want to learn more about my research or other projects, you can find my profiles on the website about page.
 auslan_video:
-  src: ""
-  poster: ""
-  captions: ""
+  src: "assets/video/auslan-introduction.mp4"
+  youtube_id: "JH4oVYo12ZA"
+  poster: "assets/video/auslan-poster.jpg"
+  captions: "assets/video/auslan-captions.vtt"
   caption: "This video is an Auslan interpreted video introduction to this exhibition and associated website"
   transcript: ""
 ---

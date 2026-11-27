@@ -12,7 +12,7 @@ if (photoDialog) {
   const statusEl = photoDialog.querySelector('[data-pv-status]');
   const captionEl = photoDialog.querySelector('[data-pv-caption]');
   const stageEl = photoDialog.querySelector('[data-pv-stage]');
-  const imgEl = photoDialog.querySelector('[data-pv-image]');
+  let imgEl = photoDialog.querySelector('[data-pv-image]');
   const prevBtn = photoDialog.querySelector('[data-pv-prev]');
   const nextBtn = photoDialog.querySelector('[data-pv-next]');
   const closeBtn = photoDialog.querySelector('[data-pv-close]');
@@ -108,8 +108,23 @@ if (photoDialog) {
     if (label) announce(label);
   }
 
+  function ensureImageEl() {
+    if (imgEl && imgEl.isConnected) return imgEl;
+    if (!stageEl) return null;
+    imgEl = document.createElement('img');
+    imgEl.className = 'photo-viewer__image';
+    imgEl.draggable = false;
+    imgEl.dataset.pvImage = '';
+    imgEl.addEventListener('dragstart', e => e.preventDefault());
+    imgEl.addEventListener('load', () => {
+      if (photoDialog.open) renderTransform();
+    });
+    stageEl.prepend(imgEl);
+    return imgEl;
+  }
+
   function showSlide(index) {
-    if (!photos.length || !imgEl) return;
+    if (!photos.length || !ensureImageEl()) return;
     currentIndex = (index + photos.length) % photos.length;
     const item = photos[currentIndex];
     zoom = 1;
@@ -156,17 +171,16 @@ if (photoDialog) {
     closeBtn?.focus();
   };
 
-  imgEl?.addEventListener('dragstart', e => e.preventDefault());
-  imgEl?.addEventListener('load', () => {
-    if (photoDialog.open) renderTransform();
-  });
-
   closeBtn?.addEventListener('click', () => photoDialog.close());
   photoDialog.addEventListener('click', e => {
     if (e.target === photoDialog) photoDialog.close();
   });
   photoDialog.addEventListener('close', () => {
     announce('');
+    if (imgEl && imgEl.isConnected) {
+      imgEl.remove();
+      imgEl = null;
+    }
     const target = lastTrigger;
     lastTrigger = null;
     onIndexSync = null;

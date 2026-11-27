@@ -88,6 +88,7 @@ Each task pairs a realistic visitor goal with a focused design question and a cl
 ## 4. Running a Session and Recording Feedback
 
 - **Session length:** Aim for 25 to 40 minutes of unhurried think-aloud exploration, or a shorter written response focusing on whichever tasks matter most to the tester's own assistive setup.
+- **Note on browser "alt text viewer" extensions:** Automated browser overlay extensions frequently report false positives on decorative `aria-hidden="true"` SVG icons inside already-labelled buttons and links (flagging them as missing `<title>` or `<desc>`) and can misalign text badges over lazy-loaded photographs. Decorative icons intentionally omit `<title>` so screen readers do not double-announce controls and browsers do not pop up extraneous tooltips; real screen readers and axe-core verify the actual accessible names accurately.
 - **Feedback log template:** Record each observation in a simple four-column table so fixes and design rationales stay transparent:
 
 | Device, Browser, and Assistive Technology | Page and Feature | Observation (Barrier, Friction, or Strength) | Outcome |

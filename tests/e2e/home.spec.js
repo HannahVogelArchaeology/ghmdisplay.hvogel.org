@@ -92,24 +92,32 @@ test.describe('Homepage & Dual Video Showcase (Outcome 3A)', () => {
     const emTexts = await page.locator('.home-about__prose em').allTextContents();
     expect(emTexts).toEqual(['within', 'for']);
 
-    // Video Introduction (relabelled from Auslan introduction)
+    // Video Introduction (lazy-loaded Able Player 5.0.0 facade with self-hosted MP4 + WebVTT captions)
     await expect(page.locator('#about h3#video-intro-title')).toHaveText('Video Introduction');
-    const video = page.locator('#about video');
-    await expect(video).toHaveCount(1);
-    await expect(video).toHaveAttribute('controls', '');
-    await expect(video).toHaveAttribute('preload', 'metadata');
-    await expect(video).toHaveAttribute('poster', '/assets/video/introduction-poster.jpg');
+    const introLazy = page.locator('#about [data-able-lazy]');
+    await expect(introLazy).toHaveAttribute('data-video-src', '/assets/video/introduction.mp4');
+    await expect(introLazy).toHaveAttribute('data-poster', '/assets/video/introduction-poster.jpg');
+    await expect(introLazy).toHaveAttribute('data-captions', '/assets/video/introduction-captions.vtt');
 
-    const source = video.locator('source');
-    await expect(source).toHaveAttribute('src', '/assets/video/introduction.mp4');
-    await expect(source).toHaveAttribute('type', 'video/mp4');
+    const introTrigger = page.locator('#about [data-able-trigger]');
+    await expect(introTrigger).toContainText('Play Video Introduction');
+    const introBtnBox = await introTrigger.boundingBox();
+    expect(introBtnBox.width).toBeGreaterThanOrEqual(44);
+    expect(introBtnBox.height).toBeGreaterThanOrEqual(44);
 
-    const track = video.locator('track');
-    await expect(track).toHaveAttribute('kind', 'captions');
-    await expect(track).toHaveAttribute('src', '/assets/video/introduction-captions.vtt');
-    await expect(track).toHaveAttribute('srclang', 'en-AU');
-    await expect(track).toHaveAttribute('label', 'English captions');
-    await expect(track).toHaveAttribute('default', '');
+    const introPoster = page.locator('#about img.able-lazy__poster');
+    await expect(introPoster).toHaveAttribute('src', '/assets/video/introduction-poster.jpg');
+    await introPoster.scrollIntoViewIfNeeded();
+    const introPosterLoaded = await introPoster.evaluate(async img => {
+      if (!img.complete) {
+        await new Promise(resolve => {
+          img.addEventListener('load', resolve, { once: true });
+          img.addEventListener('error', resolve, { once: true });
+        });
+      }
+      return img.naturalWidth;
+    });
+    expect(introPosterLoaded).toBeGreaterThan(0);
 
     // Verify .vtt file loads cleanly as text/vtt with WEBVTT header
     const vttResp = await request.get('/assets/video/introduction-captions.vtt');
@@ -128,7 +136,31 @@ test.describe('Homepage & Dual Video Showcase (Outcome 3A)', () => {
     expect(transcriptText).toContain('creating change in material culture.');
     expect(transcriptText).toContain('10th of November 2026 until the 1st of March 2027');
 
-    // Centered Auslan Introduction section
+    // Centered Auslan Introduction section: lazy-loaded SRI Able Player facade
+    const auslanTrigger = page.locator('#auslan [data-able-trigger]');
+    await expect(auslanTrigger).toHaveCount(1);
+    await expect(auslanTrigger).toContainText('Play Auslan Introduction');
+    const auslanBtnBox = await auslanTrigger.boundingBox();
+    expect(auslanBtnBox.width).toBeGreaterThanOrEqual(44);
+    expect(auslanBtnBox.height).toBeGreaterThanOrEqual(44);
+
+    // Zero third-party Able Player / jQuery / YouTube tags loaded prior to click
+    await expect(page.locator('script[src*="ableplayer"], script[src*="jquery"], iframe[src*="youtube"]')).toHaveCount(0);
+
+    const auslanPoster = page.locator('#auslan img.able-lazy__poster');
+    await expect(auslanPoster).toHaveAttribute('src', '/assets/video/auslan-poster.jpg');
+    await auslanPoster.scrollIntoViewIfNeeded();
+    const posterLoaded = await auslanPoster.evaluate(async img => {
+      if (!img.complete) {
+        await new Promise(resolve => {
+          img.addEventListener('load', resolve, { once: true });
+          img.addEventListener('error', resolve, { once: true });
+        });
+      }
+      return img.naturalWidth;
+    });
+    expect(posterLoaded).toBeGreaterThan(0);
+
     const auslanCaption = page.locator('#auslan figcaption');
     await expect(auslanCaption).toHaveText(
       'This video is an Auslan interpreted video introduction to this exhibition and associated website'
@@ -257,5 +289,72 @@ test.describe('Homepage & Dual Video Showcase (Outcome 3A)', () => {
     });
     expect(mobileCheck.overflowX).toBeLessThanOrEqual(1);
     expect(mobileCheck.stacked).toBe(true);
+  });
+
+  test('lazy-loads SRI-pinned Able Player CDN assets on click, degrades cleanly to self-hosted native video if CDN fails, and prefetches in kiosk mode', async ({ page, request }) => {
+    // Verify Auslan WebVTT captions exist and have valid WEBVTT header
+    const auslanVtt = await request.get('/assets/video/auslan-captions.vtt');
+    expect(auslanVtt.status()).toBe(200);
+    expect((await auslanVtt.text()).trim().startsWith('WEBVTT')).toBe(true);
+
+    const cdnRequested = [];
+    const videoRequested = [];
+    await page.route('https://cdn.jsdelivr.net/**', route => {
+      cdnRequested.push(route.request().url());
+      return route.abort();
+    });
+    await page.route('**/assets/video/auslan-introduction.mp4', route => {
+      videoRequested.push(route.request().url());
+      return route.abort();
+    });
+
+    await page.goto('/');
+    // Normal mode: zero eager CDN or Auslan MP4 downloads before click
+    expect(cdnRequested).toEqual([]);
+    expect(videoRequested).toEqual([]);
+    await expect(page.locator('link[rel="prefetch"][href*="auslan-introduction.mp4"]')).toHaveCount(0);
+
+    const trigger = page.locator('#auslan [data-able-trigger]');
+    await trigger.click();
+
+    // Verify SRI-pinned stylesheet tag was injected with sha384 integrity + anonymous CORS
+    const cssTag = page.locator('link[rel="stylesheet"][href*="ableplayer@5.0.0"]');
+    await expect(cssTag).toHaveCount(1);
+    await expect(cssTag).toHaveAttribute('integrity', /^sha384-[A-Za-z0-9+/=]+$/);
+    await expect(cssTag).toHaveAttribute('crossorigin', 'anonymous');
+
+    // Aborted CDN degrades to self-hosted native <video controls> + local captions (or fallback alert once mocked MP4 aborts)
+    const fallbackOrNative = page.locator('#auslan video[controls], #auslan .able-lazy__fallback[role="alert"]');
+    await expect(fallbackOrNative.first()).toBeVisible();
+  });
+
+  test('prefetches both self-hosted videos in gallery kiosk mode without falling back to YouTube', async ({ page }) => {
+    const prefetched = [];
+    await page.route('**/assets/video/*.mp4', route => {
+      prefetched.push(route.request().url());
+      return route.continue();
+    });
+    await page.route('https://cdn.jsdelivr.net/**', route => route.abort());
+
+    await page.addInitScript(() => {
+      window.localStorage.setItem('ghm_kiosk', 'on');
+    });
+    await page.goto('/');
+
+    // Wait for idle kiosk prefetch to inject <link rel="prefetch"> for both self-hosted intro videos
+    await expect(page.locator('link[rel="prefetch"][href="/assets/video/introduction.mp4"]')).toHaveCount(1, { timeout: 8000 });
+    await expect(page.locator('link[rel="prefetch"][href="/assets/video/auslan-introduction.mp4"]')).toHaveCount(1, { timeout: 8000 });
+    expect(prefetched.some(u => u.includes('introduction.mp4'))).toBe(true);
+    expect(prefetched.some(u => u.includes('auslan-introduction.mp4'))).toBe(true);
+
+    // Click Play on both players with CDN offline in kiosk mode -> both stay self-hosted native video with captions, zero YouTube links
+    await page.locator('#about [data-able-trigger]').click();
+    await expect(page.locator('#about video[controls] source')).toHaveAttribute('src', '/assets/video/introduction.mp4');
+    await expect(page.locator('#about video[controls] track')).toHaveAttribute('src', '/assets/video/introduction-captions.vtt');
+
+    await page.locator('#auslan [data-able-trigger]').click();
+    await expect(page.locator('#auslan video[controls] source')).toHaveAttribute('src', '/assets/video/auslan-introduction.mp4');
+    await expect(page.locator('#auslan video[controls] track')).toHaveAttribute('src', '/assets/video/auslan-captions.vtt');
+    await expect(page.locator('#auslan a[href*="youtube.com"]')).toHaveCount(0);
   });
 });

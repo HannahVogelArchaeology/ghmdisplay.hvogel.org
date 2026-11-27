@@ -1,0 +1,21 @@
+{
+  "name": "Disability Heritage: Archaeology with Difference",
+  "short_name": "Disability Heritage",
+  "description": "Online museum exhibition curated by Hannah Vogel at Macquarie University's Gale History Museum.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f2ea",
+  "theme_color": "#7f2709",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

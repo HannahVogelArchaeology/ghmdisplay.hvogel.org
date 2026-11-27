@@ -120,6 +120,12 @@ function isMediaPlaying() {
   for (const el of mediaEls) {
     if (!el.paused && !el.ended) return true;
   }
+  const ablePlayers = window.__ghmAblePlayers;
+  if (Array.isArray(ablePlayers)) {
+    for (const player of ablePlayers) {
+      if (player && player.playing === true) return true;
+    }
+  }
   return false;
 }
 
@@ -466,6 +472,7 @@ function startKiosk() {
   document.addEventListener('click', onDocumentClick, true);
 
   timerId = window.setInterval(tickIdleTimer, TICK_INTERVAL_MS);
+  window.dispatchEvent(new CustomEvent('ghm:kiosk-changed', { detail: { active: true } }));
 }
 
 function stopKiosk() {
@@ -473,6 +480,7 @@ function stopKiosk() {
   kioskActive = false;
   quiescentAfterReset = false;
   delete document.documentElement.dataset.kiosk;
+  window.dispatchEvent(new CustomEvent('ghm:kiosk-changed', { detail: { active: false } }));
 
   if (timerId !== null) {
     window.clearInterval(timerId);

@@ -3,7 +3,7 @@ layout: page
 title: Curation & Acknowledgements
 nav_title: Curation
 permalink: /curation/
-description: "Curator biography, acknowledgements, funding bodies, website development team, and software and asset licences for Disability Heritage: Archaeology with Difference."
+description: "Curator biography, acknowledgements, funding bodies, website team, and software and asset licences for Disability Heritage."
 prev_url: /shelves/bottom/
 prev_label: Bottom Shelf
 next_url: /accessibility/

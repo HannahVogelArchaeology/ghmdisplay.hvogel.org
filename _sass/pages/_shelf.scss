@@ -10,7 +10,6 @@
   gap: clamp(1.5rem, 3.5vw, 3rem);
   align-items: start;
   margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
-  scroll-margin-top: var(--header-clearance);
 }
 
 @media (min-width: 900px) {
@@ -137,7 +136,6 @@
   margin-bottom: clamp(2.5rem, 5vw, 4rem);
   padding-top: clamp(1.5rem, 3vw, 2.25rem);
   border-top: 1px solid var(--border-subtle);
-  scroll-margin-top: var(--header-clearance);
 }
 
 .object-jump__head {

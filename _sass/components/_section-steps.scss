@@ -75,9 +75,28 @@
   pointer-events: auto;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 759px) {
   .steps {
-    right: 0.65rem;
-    bottom: 0.75rem;
+    right: 0.5rem;
+    bottom: max(0.65rem, env(safe-area-inset-bottom));
+  }
+
+  .steps__prev,
+  .steps__next,
+  .steps__label {
+    display: none;
+  }
+
+  .steps__top {
+    background: var(--card);
+    opacity: 0;
+  }
+
+  .steps__top.is-shown {
+    opacity: 0.92;
+  }
+
+  .site-footer {
+    padding-bottom: 4.5rem;
   }
 }

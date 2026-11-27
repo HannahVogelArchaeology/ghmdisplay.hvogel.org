@@ -5,6 +5,7 @@ _site/
 vendor/
 assets/resized/
 _data/lqip.json
+_data/image_dims.json
 node_modules/
 _scripts/node_modules/
 tests/node_modules/

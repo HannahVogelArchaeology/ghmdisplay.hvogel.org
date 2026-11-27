@@ -125,4 +125,59 @@ test.describe('Cross-Site Native Tab Order, Device Attribute Compliance, Copy Cl
     );
     expect(tabCountAfter).toBe(tabCountBefore);
   });
+
+  test('section stepper advances cleanly through every section, object, page-turn, and footer without stalling', async ({ page }, testInfo) => {
+    if (testInfo.project.name !== 'desktop-chromium') return;
+
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 1280, height: 800 });
+
+    const cases = [
+      {
+        route: '/',
+        mustVisit: ['About the Exhibition', 'Auslan Introduction', 'Explore the Exhibition', 'Middle Shelf', 'Bottom Shelf', 'Footer'],
+      },
+      {
+        route: '/shelves/middle/',
+        mustVisit: ['Explore the objects', 'Reclining Figure', 'Bronze dancer (replica)', 'Amulet of Pataikos', 'Page navigation', 'Footer'],
+      },
+      {
+        route: '/curation/',
+        mustVisit: ['Acknowledgements', 'Page navigation', 'Footer'],
+      },
+    ];
+
+    for (const c of cases) {
+      await page.goto(c.route);
+      // Verify closed #photo-dialog has zero dummy placeholder <img> elements
+      await expect(page.locator('#photo-dialog img')).toHaveCount(0);
+
+      const nextBtn = page.locator('.steps__next');
+      const prevBtn = page.locator('.steps__prev');
+      await expect(nextBtn).toBeVisible();
+
+      const visited = [];
+      for (let guard = 0; guard < 30; guard++) {
+        if ((await nextBtn.getAttribute('aria-disabled')) === 'true') break;
+        const label = (await nextBtn.getAttribute('aria-label')) || '';
+        expect(visited, `${c.route} stalled repeating "${label}"`).not.toContain(label);
+        visited.push(label);
+        await nextBtn.click();
+        await page.waitForTimeout(30);
+      }
+
+      const joined = visited.join(' | ');
+      for (const expectedStop of c.mustVisit) {
+        expect(joined, `${c.route} missed stop "${expectedStop}" in [${joined}]`).toContain(expectedStop);
+      }
+      await expect(nextBtn).toHaveAttribute('aria-disabled', 'true');
+
+      // Stepping back up works cleanly too
+      await expect(prevBtn).toHaveAttribute('aria-disabled', 'false');
+      const prevLabel = (await prevBtn.getAttribute('aria-label')) || '';
+      await prevBtn.click();
+      await page.waitForTimeout(30);
+      expect(await prevBtn.getAttribute('aria-label')).not.toBe(prevLabel);
+    }
+  });
 });

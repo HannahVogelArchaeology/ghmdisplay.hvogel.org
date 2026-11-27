@@ -1,0 +1,60 @@
+{%- assign v_src = include.src | default: "" -%}
+{%- assign v_yt = include.youtube_id | default: "" -%}
+{%- assign v_poster = include.poster | default: "" -%}
+{%- assign v_captions = include.captions | default: "" -%}
+{%- assign v_title = include.title | default: "Video" -%}
+{%- assign v_player_id = include.player_id | default: "able-video-player" -%}
+<div class="video-card__frame{{ include.frame_class }} able-lazy"
+     data-able-lazy
+     data-player-id="{{ v_player_id | escape }}"
+     data-video-title="{{ v_title | escape }}"
+     {% if include.title_id and include.title_id != "" %}data-title-id="{{ include.title_id | escape }}"{% endif %}
+     {% if v_src != "" %}data-video-src="{{ v_src | relative_url }}"{% endif %}
+     {% if v_yt != "" %}data-youtube-id="{{ v_yt | escape }}"{% endif %}
+     {% if v_poster != "" %}data-poster="{{ v_poster | relative_url }}"{% endif %}
+     {% if v_captions != "" %}data-captions="{{ v_captions | relative_url }}"{% endif %}>
+  <div class="able-lazy__stage">
+    {%- if v_poster != "" -%}
+    <img class="able-lazy__poster"
+         src="{{ v_poster | relative_url }}"
+         alt="Preview frame for {{ v_title | escape }}"
+         width="1280"
+         height="720"
+         loading="lazy"
+         decoding="async">
+    {%- endif -%}
+    <button type="button"
+            class="able-lazy__trigger"
+            data-able-trigger
+            {% if include.caption_id and include.caption_id != "" %}aria-describedby="{{ include.caption_id | escape }}"{% endif %}
+            data-kg-keys="Tab > Enter/Space"
+            data-kg-label="Play {{ v_title | escape }}">
+      <span class="able-lazy__play">
+        {% include icon.html name="play" class="icon able-lazy__play-icon" size=24 %}
+        <span class="able-lazy__play-text" data-able-trigger-label>Play {{ v_title | escape }}</span>
+      </span>
+    </button>
+  </div>
+  <p class="visually-hidden" role="status" aria-live="polite" data-able-status></p>
+  <noscript>
+    {%- if v_src != "" -%}
+    <video class="video-card__player"
+           controls
+           preload="none"
+           playsinline
+           {% if v_poster != "" %}poster="{{ v_poster | relative_url }}"{% endif %}
+           {% if include.title_id and include.title_id != "" %}aria-labelledby="{{ include.title_id | escape }}"{% endif %}>
+      <source src="{{ v_src | relative_url }}" type="video/mp4">
+      {%- if v_captions != "" -%}
+      <track kind="captions" src="{{ v_captions | relative_url }}" srclang="en-AU" label="English captions" default>
+      {%- endif -%}
+      <p>Your browser cannot play this video. Please read the full transcript below.</p>
+    </video>
+    {%- elsif v_yt != "" -%}
+    <p class="able-lazy__fallback">
+      JavaScript is required to load the accessible video player.
+      <a href="https://www.youtube.com/watch?v={{ v_yt | escape }}">Watch {{ v_title | escape }} on YouTube</a>, or read the full transcript below.
+    </p>
+    {%- endif -%}
+  </noscript>
+</div>

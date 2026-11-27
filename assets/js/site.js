@@ -76,10 +76,22 @@ if (stepBar) {
   const nextButton = stepBar.querySelector('.steps__next');
   const stepLabel = stepBar.querySelector('.steps__label');
 
-  const sections = [...document.querySelectorAll('main h1, main h2, main [data-step]')]
+  const rawSections = [...document.querySelectorAll('main h1, main h2, main [data-step], nav.page-turn[data-step], footer[data-step]')]
     .filter(el => !el.closest('dialog') && (el.matches('[data-step]') || !el.parentElement?.closest('[data-step]')));
 
+  // Coalesce stops that sit right on top of each other (< 140px) so clicking Next never hitches
+  const sections = [];
+  for (const el of rawSections) {
+    const prev = sections[sections.length - 1];
+    if (prev && !el.matches('nav.page-turn, footer')) {
+      const gap = Math.abs(el.getBoundingClientRect().top - prev.getBoundingClientRect().top);
+      if (gap < 140) continue;
+    }
+    sections.push(el);
+  }
+
   const nameOf = el => {
+    if (el.dataset.stepLabel) return el.dataset.stepLabel.trim();
     const heading = el.matches('h1, h2, h3') ? el : el.querySelector('h1, h2, h3');
     if (!heading) return 'Section';
     const clone = heading.cloneNode(true);
@@ -88,17 +100,46 @@ if (stepBar) {
   };
 
   const landing = () => parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 88;
-  const atEnd = () => window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
-  const previous = () => {
-    for (let i = sections.length - 1; i >= 0; i--) {
-      if (sections[i].getBoundingClientRect().top < landing() - 8) return sections[i];
+  const maxScrollY = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  const atEnd = () => window.scrollY >= maxScrollY() - 2;
+
+  let steeredIndex = null;
+  let scrollAnimId = 0;
+  let hoveredBtn = null;
+
+  const cancelSteer = () => {
+    steeredIndex = null;
+    if (scrollAnimId) {
+      cancelAnimationFrame(scrollAnimId);
+      scrollAnimId = 0;
     }
-    return null;
   };
-  const next = () => {
-    if (atEnd()) return null;
-    const after = Math.max(landing() + 8, window.scrollY < 1 ? window.innerHeight * 0.35 : 0);
-    return sections.find(el => el.getBoundingClientRect().top > after) || null;
+
+  const currentIndex = () => {
+    if (steeredIndex !== null) return steeredIndex;
+    if (atEnd()) return sections.length - 1;
+    const cutoff = landing() + 36;
+    let idx = 0;
+    for (let i = 0; i < sections.length; i++) {
+      if (sections[i].getBoundingClientRect().top <= cutoff) {
+        idx = i;
+      } else {
+        break;
+      }
+    }
+    return idx;
+  };
+
+  const previousIndex = () => {
+    const idx = currentIndex();
+    return idx > 0 ? idx - 1 : -1;
+  };
+
+  const nextIndex = () => {
+    const idx = currentIndex();
+    if (idx >= sections.length - 1) return -1;
+    if (steeredIndex === null && atEnd()) return -1;
+    return idx + 1;
   };
 
   const setBtnState = (btn, prefix, target) => {
@@ -108,16 +149,73 @@ if (stepBar) {
     btn.dataset.hint = target ? `${prefix}: ${nameOf(target)}` : '';
   };
 
-  const updateSteps = () => {
-    topButton?.classList.toggle('is-shown', window.scrollY > window.innerHeight * 0.65);
-    setBtnState(prevButton, 'Previous', previous());
-    setBtnState(nextButton, 'Next', next());
+  const refreshHint = () => {
+    if (!stepLabel) return;
+    if (!hoveredBtn || !stepBar.matches(':hover, :focus-within')) {
+      stepLabel.textContent = '';
+      return;
+    }
+    stepLabel.textContent = hoveredBtn.dataset.hint || (hoveredBtn === topButton ? 'Back to top' : '');
+    stepLabel.style.top = `${hoveredBtn.offsetTop + hoveredBtn.offsetHeight / 2}px`;
   };
 
-  const goTo = el => {
-    el.scrollIntoView({ block: 'start', behavior: calm.matches ? 'auto' : 'smooth' });
-    if (!el.matches('a, button, [tabindex]')) el.tabIndex = -1;
-    el.focus({ preventScroll: true });
+  const updateSteps = () => {
+    topButton?.classList.toggle('is-shown', window.scrollY > window.innerHeight * 0.65);
+    const pIdx = previousIndex();
+    const nIdx = nextIndex();
+    setBtnState(prevButton, 'Previous', pIdx >= 0 ? sections[pIdx] : null);
+    setBtnState(nextButton, 'Next', nIdx >= 0 ? sections[nIdx] : null);
+    refreshHint();
+  };
+
+  const animateScrollTo = (targetEl, onDone) => {
+    if (scrollAnimId) {
+      cancelAnimationFrame(scrollAnimId);
+      scrollAnimId = 0;
+    }
+    const computeDesired = () => {
+      const docTop = targetEl.getBoundingClientRect().top + window.scrollY;
+      return Math.min(maxScrollY(), Math.max(0, Math.round(docTop - landing())));
+    };
+
+    if (calm.matches) {
+      window.scrollTo({ top: computeDesired(), behavior: 'instant' });
+      onDone();
+      return;
+    }
+
+    const startY = window.scrollY;
+    const duration = 220;
+    const startTime = performance.now();
+
+    const frame = now => {
+      const t = Math.min(1, (now - startTime) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const endY = computeDesired();
+      window.scrollTo({ top: Math.round(startY + (endY - startY) * eased), behavior: 'instant' });
+      if (t < 1) {
+        scrollAnimId = requestAnimationFrame(frame);
+      } else {
+        scrollAnimId = 0;
+        onDone();
+      }
+    };
+    scrollAnimId = requestAnimationFrame(frame);
+  };
+
+  const goToIndex = targetIdx => {
+    const el = sections[targetIdx];
+    if (!el) return;
+    steeredIndex = targetIdx;
+    updateSteps();
+
+    animateScrollTo(el, () => {
+      if (!el.matches('a, button, [tabindex]')) el.tabIndex = -1;
+      el.focus({ preventScroll: true });
+      // Release steered lock after landing so manual scrolling resumes naturally
+      steeredIndex = null;
+      updateSteps();
+    });
   };
 
   if (sections.length > 1) {
@@ -131,36 +229,49 @@ if (stepBar) {
       });
     };
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', updateSteps, { passive: true });
+    window.addEventListener('resize', () => {
+      cancelSteer();
+      updateSteps();
+    }, { passive: true });
+    window.addEventListener('wheel', cancelSteer, { passive: true });
+    window.addEventListener('touchstart', cancelSteer, { passive: true });
     updateSteps();
 
-    topButton?.addEventListener('click', goToTop);
+    topButton?.addEventListener('click', () => {
+      cancelSteer();
+      goToTop();
+    });
     prevButton?.addEventListener('click', () => {
-      const target = previous();
-      if (target) goTo(target);
+      const idx = previousIndex();
+      if (idx >= 0) goToIndex(idx);
     });
     nextButton?.addEventListener('click', () => {
-      const target = next();
-      if (target) goTo(target);
+      const idx = nextIndex();
+      if (idx >= 0) goToIndex(idx);
     });
 
     // WCAG 1.4.13 hoverable, persistent, Escape-dismissible hint label
     const showHint = e => {
       const btn = e.target.closest('.steps__button');
       if (!btn || !stepLabel) return;
-      stepLabel.textContent = btn.dataset.hint || (btn === topButton ? 'Back to top' : '');
-      stepLabel.style.top = `${btn.offsetTop + btn.offsetHeight / 2}px`;
+      hoveredBtn = btn;
+      refreshHint();
     };
     const clearHint = () => {
-      if (!stepLabel) return;
-      if (!stepBar.matches(':hover, :focus-within')) stepLabel.textContent = '';
+      if (!stepBar.matches(':hover, :focus-within')) {
+        hoveredBtn = null;
+        if (stepLabel) stepLabel.textContent = '';
+      }
     };
     stepBar.addEventListener('pointerover', showHint);
     stepBar.addEventListener('focusin', showHint);
     stepBar.addEventListener('pointerleave', clearHint);
     stepBar.addEventListener('focusout', () => requestAnimationFrame(clearHint));
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && stepLabel) stepLabel.textContent = '';
+      if (e.key === 'Escape' && stepLabel) {
+        hoveredBtn = null;
+        stepLabel.textContent = '';
+      }
     });
   }
 }

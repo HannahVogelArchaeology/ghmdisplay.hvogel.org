@@ -1,8 +1,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {%- seo -%}
+  {%- if page.permalink == '/' -%}
+  <title>{{ site.title | escape }}</title>
+  {%- elsif page.title -%}
+  <title>{{ page.title | escape }} | Disability Heritage</title>
+  {%- else -%}
+  <title>{{ site.title | escape }}</title>
+  {%- endif -%}
+  {%- seo title=false -%}
+  <meta name="theme-color" content="#f7f2ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#171412" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="any">
   <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="icon" href="{{ '/assets/favicon-32x32.png' | relative_url }}" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/apple-touch-icon.png' | relative_url }}">
+  <link rel="manifest" href="{{ '/site.webmanifest' | relative_url }}">
   <link rel="preload" href="{{ '/assets/fonts/lexend/lexend-latin-wght-normal.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
   <script>
     (function () {
